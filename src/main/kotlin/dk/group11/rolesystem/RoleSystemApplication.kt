@@ -6,11 +6,12 @@ import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @SpringBootApplication
-class RoleSystemApplication
+class RoleSystemApplication {
 
-@Bean
-fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
-    return BCryptPasswordEncoder()
+    @Bean
+    fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 }
 
 fun main(args: Array<String>) {

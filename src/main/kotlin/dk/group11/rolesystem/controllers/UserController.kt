@@ -1,5 +1,7 @@
-package dk.group11.rolesystem.users
+package dk.group11.rolesystem.controllers
 
+import dk.group11.rolesystem.model.ApplicationUser
+import dk.group11.rolesystem.users.UserService
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -7,22 +9,22 @@ import java.util.*
 class UserController(val userService: UserService) {
 
     @GetMapping("/api/users/{id}")
-    fun getUser(@PathVariable id: UUID): User {
+    fun getUser(@PathVariable id: UUID): ApplicationUser {
         return userService.getUser(id)
     }
 
     @GetMapping("/api/users")
-    fun getUsers(): List<User> {
+    fun getUsers(): List<ApplicationUser> {
         return userService.getUsers()
     }
 
     @PostMapping("/api/users")
-    fun createUser(@RequestBody user: User) {
+    fun createUser(@RequestBody user: ApplicationUser) {
         userService.createUser(user)
     }
 
     @PutMapping("/api/users")
-    fun updateUser(@RequestBody user: User) {
+    fun updateUser(@RequestBody user: ApplicationUser) {
         userService.updateUser(user)
     }
 
