@@ -8,27 +8,27 @@ import java.util.*
 @RestController
 class UserController(val userService: UserService) {
 
-    @GetMapping("/api/repositories/{id}")
+    @GetMapping("/api/users/{id}")
     fun getUser(@PathVariable id: UUID): ApplicationUser {
         return userService.getUser(id)
     }
 
-    @GetMapping("/api/repositories")
+    @GetMapping("/api/users")
     fun getUsers(): List<ApplicationUser> {
         return userService.getUsers()
     }
 
-    @PostMapping("/api/repositories")
+    @PostMapping("/api/users")
     fun createUser(@RequestBody user: ApplicationUser) {
         userService.createUser(user)
     }
 
-    @PutMapping("/api/repositories")
+    @PutMapping("/api/users")
     fun updateUser(@RequestBody user: ApplicationUser) {
         userService.updateUser(user)
     }
 
-    @DeleteMapping("/api/repositories/{id}")
+    @DeleteMapping("/api/users/{id}")
     fun deleteUser(@PathVariable id: UUID) {
         userService.deleteUser(id)
     }

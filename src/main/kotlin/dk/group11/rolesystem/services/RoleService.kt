@@ -6,7 +6,12 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class RoleService(val roleRepository: RoleRepository) {
+class RoleService(private val roleRepository: RoleRepository) {
+
+    init {
+        val role: Role = Role(title = "PartyManager", description = "I love parties")
+        roleRepository.save(role)
+    }
 
     fun getRoles(): List<Role> {
         return roleRepository.findAll().toList()

@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.model.Group
+import dk.group11.rolesystem.model.ApplicationGroup
 import dk.group11.rolesystem.repositories.GroupRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -8,15 +8,15 @@ import java.util.*
 @Service
 class GroupService(val groupRepository: GroupRepository) {
 
-    fun getGroups(): List<Group> {
+    fun getGroups(): List<ApplicationGroup> {
         return groupRepository.findAll().toList()
     }
 
-    fun getGroup(id: UUID): Group {
+    fun getGroup(id: UUID): ApplicationGroup {
         return groupRepository.findOne(id)
     }
 
-    fun createGroups(group: Group) {
+    fun createGroups(group: ApplicationGroup) {
         groupRepository.save(group)
     }
 
@@ -24,7 +24,7 @@ class GroupService(val groupRepository: GroupRepository) {
         groupRepository.delete(id)
     }
 
-    fun updateGroup(group: Group) {
+    fun updateGroup(group: ApplicationGroup) {
         groupRepository.save(group)
     }
 }
