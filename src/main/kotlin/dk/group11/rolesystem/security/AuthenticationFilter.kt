@@ -2,6 +2,7 @@ package dk.group11.rolesystem.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dk.group11.rolesystem.model.ApplicationUser
+import dk.group11.rolesystem.model.LoginUser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.authentication.AuthenticationManager
@@ -21,16 +22,12 @@ class AuthenticationFilter(val authentificationManager: AuthenticationManager) :
         return authentificationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, ArrayList()))
     }
 
-    override fun successfulAuthentication(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain,
-                                          auth: Authentication) {
-
+    override fun successfulAuthentication(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain, auth: Authentication) {
         val token = Jwts.builder()
-                .setSubject((auth.principal as ApplicationUser).username)
+                .setSubject((auth.principal as LoginUser).username)
                 .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.toByteArray())
                 .compact()
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token)
-
     }
-
 }

@@ -25,11 +25,8 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
                 .addFilter(AuthorizationFilter(authenticationManager()))
     }
 
-
     public override fun configure(auth: AuthenticationManagerBuilder) {
-
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder)
-
     }
 
     @Bean
@@ -38,6 +35,4 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
         source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
         return source
     }
-
-
 }

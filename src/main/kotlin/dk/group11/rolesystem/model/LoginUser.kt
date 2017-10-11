@@ -3,7 +3,13 @@ package dk.group11.rolesystem.model
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-data class LoginUser(private var username: String, private var password: String) : UserDetails {
+data class LoginUser(
+        private var username: String,
+        private var password: String,
+        private var authority: MutableCollection<out GrantedAuthority>,
+        private var enabled: Boolean = true
+) : UserDetails {
+
     override fun getUsername(): String {
         return username
     }
@@ -13,22 +19,22 @@ data class LoginUser(private var username: String, private var password: String)
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return authority
     }
 
     override fun isEnabled(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return enabled
     }
 
     override fun isCredentialsNonExpired(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun isAccountNonExpired(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun isAccountNonLocked(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 }

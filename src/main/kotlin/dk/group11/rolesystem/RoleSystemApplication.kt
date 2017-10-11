@@ -16,5 +16,6 @@ class RoleSystemApplication {
 
 fun main(args: Array<String>) {
     SpringApplication.run(RoleSystemApplication::class.java, *args)
+
 }
 
