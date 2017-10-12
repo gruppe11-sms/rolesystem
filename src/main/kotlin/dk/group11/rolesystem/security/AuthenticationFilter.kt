@@ -1,11 +1,10 @@
 package dk.group11.rolesystem.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dk.group11.rolesystem.model.ApplicationUser
-import dk.group11.rolesystem.model.LoginUser
+import dk.group11.rolesystem.models.ApplicationUser
+import dk.group11.rolesystem.models.LoginUser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -15,11 +14,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class AuthenticationFilter(val authentificationManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
+class AuthenticationFilter : UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(req: HttpServletRequest, res: HttpServletResponse): Authentication {
         val user: ApplicationUser = ObjectMapper().readValue(req.inputStream, ApplicationUser::class.java)
-        return authentificationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, ArrayList()))
+        return authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, ArrayList()))
     }
 
     override fun successfulAuthentication(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain, auth: Authentication) {

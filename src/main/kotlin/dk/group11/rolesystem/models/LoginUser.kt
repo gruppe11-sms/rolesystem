@@ -1,4 +1,4 @@
-package dk.group11.rolesystem.model
+package dk.group11.rolesystem.models
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

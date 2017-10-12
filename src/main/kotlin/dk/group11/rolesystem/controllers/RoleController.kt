@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.controllers
 
-import dk.group11.rolesystem.model.Role
+import dk.group11.rolesystem.models.Role
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.web.bind.annotation.*
 import java.util.*

@@ -1,4 +1,4 @@
-package dk.group11.rolesystem.model
+package dk.group11.rolesystem.models
 
 import java.util.*
 import javax.persistence.*

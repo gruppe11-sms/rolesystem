@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.model.Role
+import dk.group11.rolesystem.models.Role
 import dk.group11.rolesystem.repositories.RoleRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -9,7 +9,7 @@ import java.util.*
 class RoleService(private val roleRepository: RoleRepository) {
 
     init {
-        val role: Role = Role(title = "PartyManager", description = "I love parties")
+        val role = Role(title = "PartyManager", description = "I love parties")
         roleRepository.save(role)
     }
 
