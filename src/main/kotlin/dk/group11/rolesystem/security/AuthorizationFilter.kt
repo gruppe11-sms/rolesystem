@@ -9,12 +9,11 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AuthorizationFilter(authenticationManager: AuthenticationManager?) : BasicAuthenticationFilter(authenticationManager) {
-
+class AuthorizationFilter(authenticationManager: AuthenticationManager) : BasicAuthenticationFilter(authenticationManager) {
 
     override fun doFilterInternal(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain) {
         val header = req.getHeader(HEADER_STRING)
-        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+        if (!header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res)
             return
         }
@@ -23,7 +22,7 @@ class AuthorizationFilter(authenticationManager: AuthenticationManager?) : Basic
         chain.doFilter(req, res)
     }
 
-    fun getAuthentication(request: HttpServletRequest): UsernamePasswordAuthenticationToken {
+    private fun getAuthentication(request: HttpServletRequest): UsernamePasswordAuthenticationToken {
         val token = request.getHeader(HEADER_STRING)
         val user = Jwts.parser()
                 .setSigningKey(SECRET.toByteArray())

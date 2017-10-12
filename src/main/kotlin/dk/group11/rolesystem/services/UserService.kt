@@ -1,7 +1,7 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.model.ApplicationUser
-import dk.group11.rolesystem.model.LoginUser
+import dk.group11.rolesystem.models.ApplicationUser
+import dk.group11.rolesystem.models.LoginUser
 import dk.group11.rolesystem.repositories.UserRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

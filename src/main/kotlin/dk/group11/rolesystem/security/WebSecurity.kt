@@ -21,7 +21,7 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(AuthenticationFilter(authenticationManager()))
+                .addFilter(AuthenticationFilter())
                 .addFilter(AuthorizationFilter(authenticationManager()))
     }
 

@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.model.ApplicationGroup
+import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.repositories.GroupRepository
 import org.springframework.stereotype.Service
 import java.util.*
