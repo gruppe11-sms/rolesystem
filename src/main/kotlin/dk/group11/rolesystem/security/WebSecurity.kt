@@ -19,6 +19,7 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(AuthenticationFilter(authenticationManager()))

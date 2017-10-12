@@ -6,29 +6,30 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@RequestMapping("/api/users")
 class UserController(val userService: UserService) {
 
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/{id}")
     fun getUser(@PathVariable id: UUID): ApplicationUser {
         return userService.getUser(id)
     }
 
-    @GetMapping("/api/users")
+    @GetMapping
     fun getUsers(): List<ApplicationUser> {
         return userService.getUsers()
     }
 
-    @PostMapping("/api/users")
+    @PostMapping
     fun createUser(@RequestBody user: ApplicationUser) {
         userService.createUser(user)
     }
 
-    @PutMapping("/api/users")
+    @PutMapping
     fun updateUser(@RequestBody user: ApplicationUser) {
         userService.updateUser(user)
     }
 
-    @DeleteMapping("/api/users/{id}")
+    @DeleteMapping("/[id}")
     fun deleteUser(@PathVariable id: UUID) {
         userService.deleteUser(id)
     }
