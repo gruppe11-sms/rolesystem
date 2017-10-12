@@ -6,29 +6,30 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@RequestMapping("/api/groups")
 class GroupController(val groupService: GroupService) {
 
-    @GetMapping("/api/groups")
+    @GetMapping
     fun getGroups(): List<ApplicationGroup> {
         return groupService.getGroups()
     }
 
-    @GetMapping("/api/groups/{id}")
+    @GetMapping("/{id}")
     fun getGroup(@PathVariable id: UUID): ApplicationGroup {
         return groupService.getGroup(id)
     }
 
-    @PostMapping("/api/groups")
+    @PostMapping
     fun createGroups(@RequestBody group: ApplicationGroup) {
         groupService.createGroups(group)
     }
 
-    @PutMapping("/api/groups")
+    @PutMapping
     fun updateGroup(@RequestBody group: ApplicationGroup) {
         groupService.updateGroup(group)
     }
 
-    @DeleteMapping("/api/groups/{id}")
+    @DeleteMapping("/{id}")
     fun deleteGroup(@PathVariable id: UUID) {
         groupService.deleteGroup(id)
     }

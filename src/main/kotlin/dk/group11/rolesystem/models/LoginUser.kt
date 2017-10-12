@@ -3,9 +3,9 @@ package dk.group11.rolesystem.models
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-data class LoginUser(private var username: String,
-                     private var password: String,
-                     private var authority: MutableCollection<out GrantedAuthority>,
+data class LoginUser(private var username: String = "",
+                     private var password: String = "",
+                     private var authority: MutableCollection<out GrantedAuthority> = emptyList<GrantedAuthority>().toMutableList(),
                      private var enabled: Boolean = true) : UserDetails {
 
     override fun getUsername(): String {

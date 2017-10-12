@@ -22,7 +22,7 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
                 .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(AuthenticationFilter())
+                .addFilter(AuthenticationFilter(authenticationManager()))
                 .addFilter(AuthorizationFilter(authenticationManager()))
     }
 

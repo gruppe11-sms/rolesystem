@@ -21,8 +21,8 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
             user.password = bCryptPasswordEncoder.encode(user.password)
             userRepository.save(user)
         }
-
     }
+
 
     override fun loadUserByUsername(username: String): UserDetails? {
         val user: ApplicationUser = userRepository.findByUsername(username)
@@ -39,7 +39,11 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
         userRepository.save(user)
     }
 
-    fun getUsers(): List<ApplicationUser> {
+    fun getUsers(ids: List<UUID>): List<ApplicationUser> {
+        return userRepository.findAll(ids.toMutableList()).toList()
+    }
+
+    fun getAllUsers(): List<ApplicationUser> {
         return userRepository.findAll().toList()
     }
 

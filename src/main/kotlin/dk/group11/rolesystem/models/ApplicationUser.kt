@@ -11,5 +11,5 @@ data class ApplicationUser(@Id
                            var password: String = "",
                            var username: String = "",
                            @OneToMany
-                           var roles: List<Role> = emptyList())
+                           var roles: MutableList<Role> = emptyList<Role>().toMutableList())
 

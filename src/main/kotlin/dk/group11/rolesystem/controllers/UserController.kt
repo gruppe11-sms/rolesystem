@@ -16,7 +16,7 @@ class UserController(val userService: UserService) {
 
     @GetMapping
     fun getUsers(): List<ApplicationUser> {
-        return userService.getUsers()
+        return userService.getAllUsers()
     }
 
     @PostMapping

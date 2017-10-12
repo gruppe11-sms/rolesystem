@@ -10,6 +10,6 @@ data class ApplicationGroup(@Id
                             var title: String = "",
                             var description: String = "",
                             @OneToMany
-                            var members: List<ApplicationUser> = emptyList(),
+                            var members: MutableList<ApplicationUser> = emptyList<ApplicationUser>().toMutableList(),
                             @OneToMany
-                            var roles: List<Role> = emptyList())
+                            var roles: MutableList<Role> = emptyList<Role>().toMutableList())

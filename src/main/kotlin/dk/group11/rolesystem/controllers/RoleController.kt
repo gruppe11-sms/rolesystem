@@ -7,29 +7,30 @@ import java.util.*
 
 
 @RestController
+@RequestMapping("/api/roles")
 class RoleController(val roleService: RoleService) {
 
-    @GetMapping("/api/roles")
+    @GetMapping
     fun getRoles(): List<Role> {
         return roleService.getRoles()
     }
 
-    @GetMapping("/api/roles/{id}")
+    @GetMapping("/{id}")
     fun getRole(@PathVariable id: UUID): Role {
         return roleService.getRole(id)
     }
 
-    @PostMapping("/api/roles")
+    @PostMapping
     fun createRoles(@RequestBody role: Role) {
         roleService.createRoles(role)
     }
 
-    @PutMapping("/api/roles")
+    @PutMapping
     fun updateRole(@RequestBody role: Role) {
         roleService.updateRole(role)
     }
 
-    @DeleteMapping("/api/roles/{id}")
+    @DeleteMapping("/{id}")
     fun deleteRole(@PathVariable id: UUID) {
         roleService.deleteRole(id)
     }
