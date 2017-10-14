@@ -6,6 +6,6 @@ import java.util.*
 
 interface UserRepository : CrudRepository<ApplicationUser, UUID> {
 
-    fun findByUsername(username: String): ApplicationUser
+    fun findByUsername(username: String): ApplicationUser?
     fun existsByUsername(s: String): Boolean
 }

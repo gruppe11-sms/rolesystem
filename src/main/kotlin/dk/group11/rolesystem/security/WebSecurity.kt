@@ -20,10 +20,17 @@ class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPassword
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
+                .formLogin()
+                .loginPage("/api/auth/login")
+                .loginProcessingUrl("/api/auth/login")
+                .permitAll()
+                .and()
+//                .antMatcher("/api/**")
                 .addFilter(AuthenticationFilter(authenticationManager()))
                 .addFilter(AuthorizationFilter(authenticationManager()))
+
     }
 
     public override fun configure(auth: AuthenticationManagerBuilder) {

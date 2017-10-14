@@ -6,6 +6,7 @@ import dk.group11.rolesystem.repositories.UserRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,6 +17,7 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
 
 
     init {
+
         if (!userRepository.existsByUsername("sofie12")) {
             val user: ApplicationUser = ApplicationUser(name = "Sofie", username = "sofie12", password = "1234")
             user.password = bCryptPasswordEncoder.encode(user.password)
@@ -25,8 +27,12 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
 
 
     override fun loadUserByUsername(username: String): UserDetails? {
-        val user: ApplicationUser = userRepository.findByUsername(username)
-        return LoginUser(username = user.username, password = user.password, authority = emptyList<GrantedAuthority>().toMutableList())
+        val user: ApplicationUser? = userRepository.findByUsername(username)
+        if (user != null) {
+            return LoginUser(username = user.username, password = user.password, authority = emptyList<GrantedAuthority>().toMutableList())
+        } else {
+            throw UsernameNotFoundException(username)
+        }
     }
 
 
