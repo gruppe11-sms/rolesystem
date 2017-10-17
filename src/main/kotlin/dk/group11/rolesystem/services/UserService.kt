@@ -40,9 +40,10 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
         return userRepository.findOne(id)
     }
 
-    fun createUser(user: ApplicationUser) {
+    fun createUser(user: ApplicationUser): ApplicationUser {
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
+        return user
     }
 
     fun getUsers(ids: List<UUID>): List<ApplicationUser> {
