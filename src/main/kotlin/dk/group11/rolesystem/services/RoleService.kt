@@ -8,11 +8,6 @@ import java.util.*
 @Service
 class RoleService(private val roleRepository: RoleRepository) {
 
-    init {
-        val role = Role(title = "PartyManager", description = "I love parties")
-        roleRepository.save(role)
-    }
-
     fun getRoles(): List<Role> {
         return roleRepository.findAll().toList()
     }
@@ -21,8 +16,8 @@ class RoleService(private val roleRepository: RoleRepository) {
         return roleRepository.findOne(id)
     }
 
-    fun createRoles(role: Role) {
-        roleRepository.save(role)
+    fun createRole(role: Role): Role {
+        return roleRepository.save(role)
     }
 
     fun updateRole(role: Role) {

@@ -22,7 +22,7 @@ class RoleController(val roleService: RoleService) {
 
     @PostMapping
     fun createRoles(@RequestBody role: Role) {
-        roleService.createRoles(role)
+        roleService.createRole(role)
     }
 
     @PutMapping

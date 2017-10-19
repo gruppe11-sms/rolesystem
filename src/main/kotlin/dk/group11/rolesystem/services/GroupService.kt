@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class GroupService(val groupRepository: GroupRepository) {
+class GroupService(private val groupRepository: GroupRepository) {
 
     fun getGroups(): List<ApplicationGroup> {
         return groupRepository.findAll().toList()
@@ -16,8 +16,8 @@ class GroupService(val groupRepository: GroupRepository) {
         return groupRepository.findOne(id)
     }
 
-    fun createGroups(group: ApplicationGroup) {
-        groupRepository.save(group)
+    fun createGroup(group: ApplicationGroup): ApplicationGroup {
+        return groupRepository.save(group)
     }
 
     fun deleteGroup(id: UUID) {

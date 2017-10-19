@@ -21,7 +21,7 @@ class GroupController(val groupService: GroupService) {
 
     @PostMapping
     fun createGroups(@RequestBody group: ApplicationGroup) {
-        groupService.createGroups(group)
+        groupService.createGroup(group)
     }
 
     @PutMapping

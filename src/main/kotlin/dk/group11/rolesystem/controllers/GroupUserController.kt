@@ -1,5 +1,6 @@
 package dk.group11.rolesystem.controllers
 
+import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.services.GroupService
 import dk.group11.rolesystem.services.UserService
@@ -16,8 +17,8 @@ class GroupUserController(val groupService: GroupService, val userService: UserS
     }
 
     @GetMapping("/{userId}")
-    fun getGroupUser(@PathVariable groupId: UUID, @PathVariable userId: UUID): ApplicationUser {
-        return groupService.getGroup(groupId).members.first { user -> user.id == userId }
+    fun getGroupUser(@PathVariable userId: UUID): List<ApplicationGroup> {
+        return groupService.getGroups().filter { group -> group.members.contains(userService.getUser(userId)) }
     }
 
     @PostMapping("/{userId}")

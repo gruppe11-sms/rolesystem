@@ -13,23 +13,17 @@ import java.util.*
 
 
 @Service
-class UserService(private val userRepository: UserRepository, val bCryptPasswordEncoder: BCryptPasswordEncoder) : UserDetailsService {
-
-
-    init {
-
-        if (!userRepository.existsByUsername("sofie12")) {
-            val user: ApplicationUser = ApplicationUser(name = "Sofie", username = "sofie12", password = "1234")
-            user.password = bCryptPasswordEncoder.encode(user.password)
-            userRepository.save(user)
-        }
-    }
-
+class UserService(private val userRepository: UserRepository,
+                  private val bCryptPasswordEncoder: BCryptPasswordEncoder) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails? {
         val user: ApplicationUser? = userRepository.findByUsername(username)
         if (user != null) {
-            return LoginUser(username = user.username, password = user.password, authority = emptyList<GrantedAuthority>().toMutableList())
+            return LoginUser(
+                    username = user.username,
+                    password = user.password,
+                    authority = emptyList<GrantedAuthority>().toMutableList()
+            )
         } else {
             throw UsernameNotFoundException(username)
         }
@@ -61,4 +55,5 @@ class UserService(private val userRepository: UserRepository, val bCryptPassword
     fun deleteUser(id: UUID) {
         userRepository.delete(id)
     }
+
 }

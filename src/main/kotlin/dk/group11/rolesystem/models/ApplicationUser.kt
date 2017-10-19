@@ -4,8 +4,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-data class ApplicationUser(@Id
-                           @GeneratedValue(strategy = GenerationType.AUTO)
+data class ApplicationUser(@Id @GeneratedValue(strategy = GenerationType.AUTO)
                            var id: UUID = UUID.randomUUID(),
                            var name: String = "",
                            var password: String = "",
