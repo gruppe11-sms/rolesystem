@@ -9,7 +9,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AuthorizationFilter(val authenticationManager1: AuthenticationManager) : BasicAuthenticationFilter(authenticationManager1) {
+class AuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
 
     override fun doFilterInternal(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain) {
         val header = req.getHeader(HEADER_STRING)

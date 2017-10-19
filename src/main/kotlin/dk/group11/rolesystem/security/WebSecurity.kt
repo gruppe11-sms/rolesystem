@@ -14,20 +14,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 @EnableWebSecurity
-class WebSecurity(val userDetailsService: UserDetailsService, val bCryptPasswordEncoder: BCryptPasswordEncoder) : WebSecurityConfigurerAdapter() {
+class WebSecurity(private val userDetailsService: UserDetailsService,
+                  private val bCryptPasswordEncoder: BCryptPasswordEncoder) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
-//                .anyRequest().authenticated()
-                .and()
+                .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll().and()
                 .formLogin()
                 .loginPage("/api/auth/login")
-                .loginProcessingUrl("/api/auth/login")
-                .permitAll()
-                .and()
-//                .antMatcher("/api/**")
+                .loginProcessingUrl("/api/auth/login").permitAll().and()
                 .addFilter(AuthenticationFilter(authenticationManager()))
                 .addFilter(AuthorizationFilter(authenticationManager()))
 

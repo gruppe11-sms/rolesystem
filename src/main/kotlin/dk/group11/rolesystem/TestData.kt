@@ -18,17 +18,26 @@ class TestData(private val userRepository: UserRepository,
                private val bCryptPasswordEncoder: BCryptPasswordEncoder) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
-        println("Code is ran")
-
-        val user = ApplicationUser(name = "Sofie", username = "sofie12", password = "1234")
-        user.password = bCryptPasswordEncoder.encode(user.password)
-        val role = Role(title = "PartyManager", description = "Manages parties")
-        roleRepository.save(role)
-        user.roles.add(role)
-        userRepository.save(user)
-
-        val group = ApplicationGroup(title = "3.B", description = "Member of class 3.B")
-        group.members.add(user)
-        groupRepository.save(group)
+        val role = roleRepository.save(
+                Role(
+                        title = "PartyManager",
+                        description = "Manages parties"
+                )
+        )
+        val user = userRepository.save(
+                ApplicationUser(
+                        name = "Sofie",
+                        username = "sofie12",
+                        password = bCryptPasswordEncoder.encode("1234"),
+                        roles = mutableListOf(role)
+                )
+        )
+        groupRepository.save(
+                ApplicationGroup(
+                        title = "3.B",
+                        description = "Member of class 3.B",
+                        members = mutableListOf(user)
+                )
+        )
     }
 }

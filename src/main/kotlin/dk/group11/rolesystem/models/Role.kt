@@ -7,9 +7,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-data class Role(@Id
-                @GeneratedValue(strategy = GenerationType.AUTO)
+data class Role(@Id @GeneratedValue(strategy = GenerationType.AUTO)
                 var id: UUID = UUID.randomUUID(),
                 var title: String = "",
-                var description: String = ""
-)
+                var description: String = "")

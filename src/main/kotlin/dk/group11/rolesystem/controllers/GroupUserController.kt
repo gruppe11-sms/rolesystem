@@ -9,7 +9,8 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/groups/{groupId}/users/")
-class GroupUserController(val groupService: GroupService, val userService: UserService) {
+class GroupUserController(private val groupService: GroupService,
+                          private val userService: UserService) {
 
     @GetMapping
     fun getGroupUsers(@PathVariable groupId: UUID): List<ApplicationUser> {
