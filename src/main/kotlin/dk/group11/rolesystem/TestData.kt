@@ -18,26 +18,32 @@ class TestData(private val userRepository: UserRepository,
                private val bCryptPasswordEncoder: BCryptPasswordEncoder) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
-        val role = roleRepository.save(
-                Role(
-                        title = "PartyManager",
-                        description = "Manages parties"
-                )
-        )
-        val user = userRepository.save(
-                ApplicationUser(
-                        name = "Sofie",
-                        username = "sofie12",
-                        password = bCryptPasswordEncoder.encode("1234"),
-                        roles = mutableListOf(role)
-                )
-        )
-        groupRepository.save(
-                ApplicationGroup(
-                        title = "3.B",
-                        description = "Member of class 3.B",
-                        members = mutableListOf(user)
-                )
-        )
+        if (!roleRepository.existsByTitle("PartyManager") &&
+                !userRepository.existsByUsername("sofie12") &&
+                !groupRepository.existsByTitle("3.B")) {
+
+            val role = roleRepository.save(
+                    Role(
+                            title = "PartyManager",
+                            description = "Manages parties"
+                    )
+            )
+
+            val user = userRepository.save(
+                    ApplicationUser(
+                            name = "Sofie",
+                            username = "sofie12",
+                            password = bCryptPasswordEncoder.encode("1234"),
+                            roles = mutableListOf(role)
+                    )
+            )
+            groupRepository.save(
+                    ApplicationGroup(
+                            title = "3.B",
+                            description = "Member of class 3.B",
+                            members = mutableListOf(user)
+                    )
+            )
+        }
     }
 }

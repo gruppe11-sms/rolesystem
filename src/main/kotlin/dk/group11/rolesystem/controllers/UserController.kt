@@ -29,7 +29,7 @@ class UserController(val userService: UserService) {
         userService.updateUser(user)
     }
 
-    @DeleteMapping("/[id}")
+    @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: UUID) {
         userService.deleteUser(id)
     }

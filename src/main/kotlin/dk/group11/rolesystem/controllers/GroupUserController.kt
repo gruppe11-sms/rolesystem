@@ -19,7 +19,8 @@ class GroupUserController(private val groupService: GroupService,
 
     @GetMapping("/{userId}")
     fun getGroupUser(@PathVariable userId: UUID): List<ApplicationGroup> {
-        return groupService.getGroups().filter { group -> group.members.contains(userService.getUser(userId)) }
+        val user = userService.getUser(userId)
+        return groupService.getGroups().filter { group -> group.members.contains(user) }
     }
 
     @PostMapping("/{userId}")
