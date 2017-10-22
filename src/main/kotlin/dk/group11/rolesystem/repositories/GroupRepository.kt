@@ -6,4 +6,5 @@ import java.util.*
 
 interface GroupRepository : CrudRepository<ApplicationGroup, UUID> {
     fun existsByTitle(title: String): Boolean
+    fun findByMembersId(id: UUID): List<ApplicationGroup>
 }

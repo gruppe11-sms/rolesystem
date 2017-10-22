@@ -16,6 +16,10 @@ class GroupService(private val groupRepository: GroupRepository) {
         return groupRepository.findOne(id)
     }
 
+    fun getGroupsByMemberId(id: UUID): List<ApplicationGroup> {
+        return groupRepository.findByMembersId(id)
+    }
+
     fun createGroup(group: ApplicationGroup): ApplicationGroup {
         return groupRepository.save(group)
     }

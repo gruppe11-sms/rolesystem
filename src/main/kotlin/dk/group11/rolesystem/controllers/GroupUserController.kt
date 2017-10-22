@@ -19,19 +19,23 @@ class GroupUserController(private val groupService: GroupService,
 
     @GetMapping("/{userId}")
     fun getGroupUser(@PathVariable userId: UUID): List<ApplicationGroup> {
-        val user = userService.getUser(userId)
-        return groupService.getGroups().filter { group -> group.members.contains(user) }
+        return groupService.getGroupsByMemberId(userId)
     }
 
     @PostMapping("/{userId}")
     fun addGroupUser(@PathVariable groupId: UUID, @PathVariable userId: UUID) {
+        val group = groupService.getGroup(groupId)
         val user = userService.getUser(groupId)
-        groupService.getGroup(groupId).members.add(user)
+        group.members.add(user)
+        groupService.updateGroup(group)
     }
 
     @PostMapping
-    fun addGroupUsers(@PathVariable groupId: UUID, @RequestBody ids: List<UUID>) {
-        groupService.getGroup(groupId).members.addAll(userService.getUsers(ids))
-    }
+    fun addGroupUsers(@PathVariable groupId: UUID, @RequestBody userIds: List<UUID>) {
+        val group = groupService.getGroup(groupId)
+        val users = userService.getUsers(userIds)
+        group.members.addAll(users)
+        groupService.updateGroup(group)
 
+    }
 }
