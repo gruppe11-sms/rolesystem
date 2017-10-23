@@ -1,13 +1,11 @@
 package dk.group11.rolesystem.models
 
-import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 data class Role(@Id @GeneratedValue(strategy = GenerationType.AUTO)
-                var id: UUID = UUID.randomUUID(),
+                var id: Long = 0,
                 var title: String = "",
-                var description: String = "")
+                var description: String = "",
+                @OneToMany(cascade = arrayOf(CascadeType.ALL))
+                var users: MutableList<ApplicationUser> = mutableListOf())

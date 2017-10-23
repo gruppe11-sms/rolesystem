@@ -3,7 +3,6 @@ package dk.group11.rolesystem.controllers
 import dk.group11.rolesystem.models.Role
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 
 @RestController
@@ -16,7 +15,7 @@ class RoleController(val roleService: RoleService) {
     }
 
     @GetMapping("/{id}")
-    fun getRole(@PathVariable id: UUID): Role {
+    fun getRole(@PathVariable id: Long): Role {
         return roleService.getRole(id)
     }
 
@@ -31,7 +30,7 @@ class RoleController(val roleService: RoleService) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteRole(@PathVariable id: UUID) {
+    fun deleteRole(@PathVariable id: Long) {
         roleService.deleteRole(id)
     }
 

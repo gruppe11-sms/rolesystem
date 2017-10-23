@@ -3,14 +3,13 @@ package dk.group11.rolesystem.controllers
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.services.UserService
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/users")
 class UserController(val userService: UserService) {
 
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: UUID): ApplicationUser {
+    fun getUser(@PathVariable id: Long): ApplicationUser {
         return userService.getUser(id)
     }
 
@@ -30,7 +29,7 @@ class UserController(val userService: UserService) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: UUID) {
+    fun deleteUser(@PathVariable id: Long) {
         userService.deleteUser(id)
     }
 }

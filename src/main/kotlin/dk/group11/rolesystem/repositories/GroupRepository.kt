@@ -2,9 +2,8 @@ package dk.group11.rolesystem.repositories
 
 import dk.group11.rolesystem.models.ApplicationGroup
 import org.springframework.data.repository.CrudRepository
-import java.util.*
 
-interface GroupRepository : CrudRepository<ApplicationGroup, UUID> {
+interface GroupRepository : CrudRepository<ApplicationGroup, Long> {
     fun existsByTitle(title: String): Boolean
-    fun findByMembersId(id: UUID): List<ApplicationGroup>
+    fun findByMembersId(id: Long): List<ApplicationGroup>
 }

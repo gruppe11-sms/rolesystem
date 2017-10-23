@@ -3,7 +3,6 @@ package dk.group11.rolesystem.services
 import dk.group11.rolesystem.models.Role
 import dk.group11.rolesystem.repositories.RoleRepository
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class RoleService(private val roleRepository: RoleRepository) {
@@ -12,7 +11,7 @@ class RoleService(private val roleRepository: RoleRepository) {
         return roleRepository.findAll().toList()
     }
 
-    fun getRole(id: UUID): Role {
+    fun getRole(id: Long): Role {
         return roleRepository.findOne(id)
     }
 
@@ -24,7 +23,7 @@ class RoleService(private val roleRepository: RoleRepository) {
         roleRepository.save(role)
     }
 
-    fun deleteRole(id: UUID) {
+    fun deleteRole(id: Long) {
         roleRepository.delete(id)
     }
 
