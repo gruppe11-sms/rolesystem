@@ -13,14 +13,13 @@ import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.collections.ArrayList
 
 
-class AuthenticationFilter(private val authManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
+class AuthenticationFilter(val authManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(req: HttpServletRequest, res: HttpServletResponse): Authentication {
         val user: ApplicationUser = ObjectMapper().readValue(req.inputStream, ApplicationUser::class.java)
-        return authManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.name, ArrayList()))
+        return authManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, emptyList()))
     }
 
     override fun successfulAuthentication(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain, auth: Authentication) {

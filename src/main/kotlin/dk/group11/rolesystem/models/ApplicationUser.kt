@@ -1,14 +1,13 @@
 package dk.group11.rolesystem.models
 
-import java.util.*
 import javax.persistence.*
 
 @Entity
 data class ApplicationUser(@Id @GeneratedValue(strategy = GenerationType.AUTO)
-                           var id: UUID = UUID.randomUUID(),
+                           var id: Long = 0,
                            var name: String = "",
                            var password: String = "",
                            var username: String = "",
-                           @OneToMany
-                           var roles: MutableList<Role> = emptyList<Role>().toMutableList())
+                           @OneToMany(cascade = arrayOf(CascadeType.ALL))
+                           var roles: MutableList<Role> = mutableListOf())
 

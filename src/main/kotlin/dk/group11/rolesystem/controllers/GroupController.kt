@@ -3,7 +3,6 @@ package dk.group11.rolesystem.controllers
 import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.services.GroupService
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/groups")
@@ -15,7 +14,7 @@ class GroupController(val groupService: GroupService) {
     }
 
     @GetMapping("/{id}")
-    fun getGroup(@PathVariable id: UUID): ApplicationGroup {
+    fun getGroup(@PathVariable id: Long): ApplicationGroup {
         return groupService.getGroup(id)
     }
 
@@ -30,7 +29,7 @@ class GroupController(val groupService: GroupService) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteGroup(@PathVariable id: UUID) {
+    fun deleteGroup(@PathVariable id: Long) {
         groupService.deleteGroup(id)
     }
 

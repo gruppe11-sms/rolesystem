@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 @Service
@@ -30,7 +29,7 @@ class UserService(private val userRepository: UserRepository,
     }
 
 
-    fun getUser(id: UUID): ApplicationUser {
+    fun getUser(id: Long): ApplicationUser {
         return userRepository.findOne(id)
     }
 
@@ -40,7 +39,7 @@ class UserService(private val userRepository: UserRepository,
         return user
     }
 
-    fun getUsers(ids: List<UUID>): List<ApplicationUser> {
+    fun getUsers(ids: List<Long>): List<ApplicationUser> {
         return userRepository.findAll(ids.toMutableList()).toList()
     }
 
@@ -52,7 +51,7 @@ class UserService(private val userRepository: UserRepository,
         userRepository.save(user)
     }
 
-    fun deleteUser(id: UUID) {
+    fun deleteUser(id: Long) {
         userRepository.delete(id)
     }
 
