@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(val userService: UserService) {
+class UserController(private val userService: UserService) {
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): ApplicationUser {
@@ -16,6 +16,12 @@ class UserController(val userService: UserService) {
     @GetMapping
     fun getUsers(): List<ApplicationUser> {
         return userService.getAllUsers()
+    }
+
+    @GetMapping("/names")
+    fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> {
+        val ids = userIds.split(",").map { s -> s.toLong() }
+        return userService.getUsers(ids).map { it.id to it.name }.toMap()
     }
 
     @PostMapping

@@ -28,7 +28,6 @@ class UserService(private val userRepository: UserRepository,
         }
     }
 
-
     fun getUser(id: Long): ApplicationUser {
         return userRepository.findOne(id)
     }
@@ -55,5 +54,11 @@ class UserService(private val userRepository: UserRepository,
         userRepository.delete(id)
     }
 
-
+    fun getUserByUsername(username: String): ApplicationUser {
+        val user = userRepository.findByUsername(username)
+        if (user != null) {
+            return user
+        } else
+            throw UsernameNotFoundException(username)
+    }
 }

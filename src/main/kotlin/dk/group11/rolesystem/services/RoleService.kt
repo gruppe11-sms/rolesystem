@@ -26,6 +26,4 @@ class RoleService(private val roleRepository: RoleRepository) {
     fun deleteRole(id: Long) {
         roleRepository.delete(id)
     }
-
-
 }

@@ -33,5 +33,4 @@ class RoleController(val roleService: RoleService) {
     fun deleteRole(@PathVariable id: Long) {
         roleService.deleteRole(id)
     }
-
 }

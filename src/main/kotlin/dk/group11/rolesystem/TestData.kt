@@ -10,16 +10,18 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import javax.transaction.Transactional
 
 @Component
 class TestData(private val userRepository: UserRepository,
                private val roleRepository: RoleRepository,
                private val groupRepository: GroupRepository,
                private val bCryptPasswordEncoder: BCryptPasswordEncoder) : ApplicationRunner {
-
+    @Transactional
     override fun run(args: ApplicationArguments) {
         if (!roleRepository.existsByTitle("PartyManager") &&
                 !userRepository.existsByUsername("sofie12") &&
+                !userRepository.existsByUsername("emikr15") &&
                 !groupRepository.existsByTitle("3.B")) {
 
             val role = roleRepository.save(
@@ -28,11 +30,18 @@ class TestData(private val userRepository: UserRepository,
                             description = "Manages parties"
                     )
             )
-
-            val user = userRepository.save(
+            val user0 = userRepository.save(
                     ApplicationUser(
                             name = "Sofie",
                             username = "sofie12",
+                            password = bCryptPasswordEncoder.encode("1234"),
+                            roles = mutableListOf(role)
+                    )
+            )
+            val user1 = userRepository.save(
+                    ApplicationUser(
+                            name = "Emil",
+                            username = "emikr15",
                             password = bCryptPasswordEncoder.encode("1234"),
                             roles = mutableListOf(role)
                     )
@@ -41,7 +50,7 @@ class TestData(private val userRepository: UserRepository,
                     ApplicationGroup(
                             title = "3.B",
                             description = "Member of class 3.B",
-                            members = mutableListOf(user)
+                            members = mutableListOf(user1, user0)
                     )
             )
         }

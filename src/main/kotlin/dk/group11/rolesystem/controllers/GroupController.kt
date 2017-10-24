@@ -32,7 +32,4 @@ class GroupController(val groupService: GroupService) {
     fun deleteGroup(@PathVariable id: Long) {
         groupService.deleteGroup(id)
     }
-
 }
-
-
