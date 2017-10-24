@@ -21,7 +21,7 @@ class UserController(private val userService: UserService) {
 
     @GetMapping("/names")
     fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> {
-        val ids = userIds.split(delimiters = ",").map { s -> s.toLong() }
+        val ids = userIds.split(delimiters = ",").mapNotNull { s -> s.toLongOrNull() }
         return userService.getUsers(ids).map { it.id to it.name }.toMap()
     }
 
