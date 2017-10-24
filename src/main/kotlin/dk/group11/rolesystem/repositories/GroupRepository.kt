@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository
 interface GroupRepository : CrudRepository<ApplicationGroup, Long> {
     fun existsByTitle(title: String): Boolean
     fun findByMembersId(id: Long): List<ApplicationGroup>
+    fun findByTitle(s: String): ApplicationGroup?
 }

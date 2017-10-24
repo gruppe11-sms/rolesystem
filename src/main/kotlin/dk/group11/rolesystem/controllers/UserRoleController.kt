@@ -30,7 +30,7 @@ class UserRoleController(val userService: UserService) {
     }
 
     @GetMapping
-    fun getUserRoles(@PathVariable id: Long): List<Role> {
-        return userService.getUser(id).roles
+    fun getUserRoles(@PathVariable id: Long): List<RoleDTO> {
+        return userService.getUser(id).roles.map { it.toDTO() }
     }
 }

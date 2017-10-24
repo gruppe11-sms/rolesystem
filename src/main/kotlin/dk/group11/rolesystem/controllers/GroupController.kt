@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*
 class GroupController(val groupService: GroupService) {
 
     @GetMapping
-    fun getGroups(): List<ApplicationGroup> {
-        return groupService.getGroups()
+    fun getGroups(): List<GroupDTO> {
+        return groupService.getGroups().map { it.toDTO() }
     }
 
     @GetMapping("/{id}")
-    fun getGroup(@PathVariable id: Long): ApplicationGroup {
-        return groupService.getGroup(id)
+    fun getGroup(@PathVariable id: Long): GroupDTO {
+        return groupService.getGroup(id).toDTO()
     }
 
     @PostMapping

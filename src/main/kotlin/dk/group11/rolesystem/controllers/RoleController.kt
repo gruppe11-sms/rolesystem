@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*
 class RoleController(val roleService: RoleService) {
 
     @GetMapping
-    fun getRoles(): List<Role> {
-        return roleService.getRoles()
+    fun getRoles(): List<RoleDTO> {
+        return roleService.getRoles().map { it.toDTO() }
     }
 
     @GetMapping("/{id}")
-    fun getRole(@PathVariable id: Long): Role {
-        return roleService.getRole(id)
+    fun getRole(@PathVariable id: Long): RoleDTO {
+        return roleService.getRole(id).toDTO()
     }
 
     @PostMapping

@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-open class AuthenticationFilter(private val authManager: AuthenticationManager,
-                                private val userService: UserService) : UsernamePasswordAuthenticationFilter() {
+class AuthenticationFilter(private val authManager: AuthenticationManager,
+                           private val userService: UserService) : UsernamePasswordAuthenticationFilter() {
 
-    inner class UserData(val id: Long, val username: String)
+    data class UserData(val id: Long, val username: String)
 
     override fun attemptAuthentication(req: HttpServletRequest,
                                        res: HttpServletResponse): Authentication {

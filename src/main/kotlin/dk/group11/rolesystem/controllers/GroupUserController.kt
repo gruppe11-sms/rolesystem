@@ -1,7 +1,5 @@
 package dk.group11.rolesystem.controllers
 
-import dk.group11.rolesystem.models.ApplicationGroup
-import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.services.GroupService
 import dk.group11.rolesystem.services.UserService
 import org.springframework.web.bind.annotation.*
@@ -12,13 +10,13 @@ class GroupUserController(private val groupService: GroupService,
                           private val userService: UserService) {
 
     @GetMapping
-    fun getGroupUsers(@PathVariable groupId: Long): List<ApplicationUser> {
-        return groupService.getGroup(groupId).members
+    fun getGroupUsers(@PathVariable groupId: Long): List<UserDTO> {
+        return groupService.getGroup(groupId).members.map { it.toDTO() }
     }
 
     @GetMapping("/{userId}")
-    fun getGroupUser(@PathVariable userId: Long): List<ApplicationGroup> {
-        return groupService.getGroupsByMemberId(userId)
+    fun getGroupUser(@PathVariable userId: Long): List<GroupDTO> {
+        return groupService.getGroupsByMemberId(userId).map { it.toDTO() }
     }
 
     @PostMapping("/{userId}")
@@ -35,6 +33,5 @@ class GroupUserController(private val groupService: GroupService,
         val users = userService.getUsers(userIds)
         group.members.addAll(users)
         groupService.updateGroup(group)
-
     }
 }

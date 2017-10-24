@@ -24,35 +24,50 @@ class TestData(private val userRepository: UserRepository,
                 !userRepository.existsByUsername("emikr15") &&
                 !groupRepository.existsByTitle("3.B")) {
 
-            val role = roleRepository.save(
+
+            roleRepository.save(
                     Role(
                             title = "PartyManager",
                             description = "Manages parties"
                     )
             )
-            val user0 = userRepository.save(
+            userRepository.save(listOf(
                     ApplicationUser(
                             name = "Sofie",
                             username = "sofie12",
-                            password = bCryptPasswordEncoder.encode("1234"),
-                            roles = mutableListOf(role)
-                    )
-            )
-            val user1 = userRepository.save(
+                            password = bCryptPasswordEncoder.encode("1234")
+                    ),
                     ApplicationUser(
                             name = "Emil",
                             username = "emikr15",
-                            password = bCryptPasswordEncoder.encode("1234"),
-                            roles = mutableListOf(role)
+                            password = bCryptPasswordEncoder.encode("1234")
                     )
-            )
+            ))
+
             groupRepository.save(
                     ApplicationGroup(
                             title = "3.B",
-                            description = "Member of class 3.B",
-                            members = mutableListOf(user1, user0)
+                            description = "Member of class 3.B"
                     )
+
             )
+            val group = groupRepository.findByTitle("3.B")
+            val user = userRepository.findByUsername("sofie12")
+            val role = roleRepository.findByTitle("PartyManager")
+
+            if (role != null && user != null) {
+                println("Adding user")
+                user.roles.add(role)
+                userRepository.save(user)
+                roleRepository.save(role)
+            }
+
+            if (group != null && user != null) {
+                println("adding user to group")
+                group.members.add(user)
+                groupRepository.save(group)
+                userRepository.save(user)
+            }
         }
     }
 }

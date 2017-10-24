@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/users")
 class UserController(private val userService: UserService) {
 
+
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Long): ApplicationUser {
-        return userService.getUser(id)
+    fun getUser(@PathVariable id: Long): UserDTO {
+        return userService.getUser(id).toDTO()
     }
 
     @GetMapping
-    fun getUsers(): List<ApplicationUser> {
-        return userService.getAllUsers()
+    fun getUsers(): List<UserDTO> {
+        return userService.getAllUsers().map { it.toDTO() }
     }
 
     @GetMapping("/names")
     fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> {
-        val ids = userIds.split(",").map { s -> s.toLong() }
+        val ids = userIds.split(delimiters = ",").map { s -> s.toLong() }
         return userService.getUsers(ids).map { it.id to it.name }.toMap()
     }
 

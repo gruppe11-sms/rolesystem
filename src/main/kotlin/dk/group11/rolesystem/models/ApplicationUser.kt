@@ -9,6 +9,7 @@ data class ApplicationUser(@Id @GeneratedValue(strategy = GenerationType.AUTO)
                            var password: String = "",
                            var username: String = "",
                            @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+                           @JoinColumn
                            var roles: MutableList<Role> = mutableListOf(),
-                           @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+                           @ManyToMany(mappedBy = "members", cascade = arrayOf(CascadeType.ALL))
                            var groups: MutableList<ApplicationGroup> = mutableListOf())
