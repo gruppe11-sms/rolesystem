@@ -7,12 +7,13 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @DataJpaTest
-internal class UserServiceTest(val userRepository: UserRepository) {
+internal class UserServiceTest() {
 
     lateinit var userService: UserService
 
@@ -21,14 +22,14 @@ internal class UserServiceTest(val userRepository: UserRepository) {
 
     @Before
     fun setUp() {
-        userService = UserService(userRepository)
+        userService = UserService(userRepository, BCryptPasswordEncoder())
     }
 
     @Test
     fun loadUserByUsername() {
     }
 
-    @Test ,
+    @Test
     fun getUser() {
     }
 
