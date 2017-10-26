@@ -35,6 +35,11 @@ class RoleSystemApplication {
     }
 
     @Bean
+    fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
+
+    @Bean
     fun dataSouceWrapper(): BeanPostProcessor {
         return RetryableDataSourceBeanPostProcessor()
     }
