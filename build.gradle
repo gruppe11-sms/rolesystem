@@ -21,6 +21,7 @@ apply plugin: 'org.springframework.boot'
 group = 'dk.group11'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+archivesBaseName = "rolesystem"
 compileKotlin {
 	kotlinOptions.jvmTarget = "1.8"
 }
@@ -40,6 +41,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-web-services')
+	compile("org.springframework.retry:spring-retry")
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.8.0'
