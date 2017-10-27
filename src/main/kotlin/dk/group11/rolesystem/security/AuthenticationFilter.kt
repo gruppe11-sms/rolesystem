@@ -1,6 +1,7 @@
 package dk.group11.rolesystem.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import dk.group11.rolesystem.auditClient.AuditClient
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
 import dk.group11.rolesystem.services.UserService
@@ -15,9 +16,11 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+class LoginAuditEntryData(val username: String, val userId: Long)
 
 class AuthenticationFilter(private val authManager: AuthenticationManager,
-                           private val userService: UserService) : UsernamePasswordAuthenticationFilter() {
+                           private val userService: UserService,
+                           private val auditClient: AuditClient) : UsernamePasswordAuthenticationFilter() {
 
     data class UserData(val id: Long, val username: String)
 
@@ -38,6 +41,11 @@ class AuthenticationFilter(private val authManager: AuthenticationManager,
                 .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.toByteArray())
                 .compact()
+
+        auditClient.createEntry("[RoleSystem] Login", LoginAuditEntryData(user.username, user.id), TOKEN_PREFIX + token)
+
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token)
+
+
     }
 }

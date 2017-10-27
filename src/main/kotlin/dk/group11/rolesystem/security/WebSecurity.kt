@@ -1,5 +1,6 @@
 package dk.group11.rolesystem.security
 
+import dk.group11.rolesystem.auditClient.AuditClient
 import dk.group11.rolesystem.services.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod
@@ -17,7 +18,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 class WebSecurity(private val userDetailsService: UserDetailsService,
                   private val bCryptPasswordEncoder: BCryptPasswordEncoder,
-                  private val userService: UserService) : WebSecurityConfigurerAdapter() {
+                  private val userService: UserService,
+                  private val auditClient: AuditClient) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
@@ -28,7 +30,7 @@ class WebSecurity(private val userDetailsService: UserDetailsService,
                 .loginPage("/api/auth/login")
                 .loginProcessingUrl("/api/auth/login").permitAll()
                 .and()
-                .addFilter(AuthenticationFilter(authenticationManager(), userService))
+                .addFilter(AuthenticationFilter(authenticationManager(), userService, auditClient))
                 .addFilter(AuthorizationFilter(authenticationManager()))
     }
 
