@@ -11,7 +11,7 @@ class RoleController(val roleService: RoleService) {
 
     @GetMapping
     fun getRoles(): List<RoleDTO> {
-        return roleService.getRoles().map { it.toDTO() }
+        return roleService.getRoles().map { it.toDTO(false) }
     }
 
     @GetMapping("/{id}")

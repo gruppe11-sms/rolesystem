@@ -5,21 +5,58 @@ import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.Role
 
 fun ApplicationUser.toDTO(recursive: Boolean = true): UserDTO {
-    val roles = if (recursive) roles.map { it.toDTO(false) } else emptyList()
-    val groups = if (recursive) groups.map { it.toDTO(false) } else emptyList()
-    return UserDTO(id, name, password, username, roles, groups)
+    val roles = if (recursive)
+        roles.map { it.toDTO(false) }
+    else emptyList()
+
+    val groups = if (recursive)
+        groups.map { it.toDTO(false) }
+    else emptyList()
+
+    return UserDTO(
+            id = id,
+            name = name,
+            password = password,
+            username = username,
+            roles = roles,
+            groups = groups
+    )
 }
 
 fun ApplicationGroup.toDTO(recursive: Boolean = true): GroupDTO {
-    val members = if (recursive) members.map { it.toDTO(false) } else emptyList()
-    val roles = if (recursive) roles.map { it.toDTO(false) } else emptyList()
-    return GroupDTO(id, title, description, members, roles)
+    val members = if (recursive)
+        members.map { it.toDTO(false) }
+    else emptyList()
+
+    val roles = if (recursive)
+        roles.map { it.toDTO(false) }
+    else emptyList()
+
+    return GroupDTO(
+            id = id,
+            title = title,
+            description = description,
+            members = members,
+            roles = roles
+    )
 }
 
 fun Role.toDTO(recursive: Boolean = true): RoleDTO {
-    val users = if (recursive) users.map { it.toDTO(false) } else emptyList()
-    val groups = if (recursive) groups.map { it.toDTO(false) } else emptyList()
-    return RoleDTO(id, description, title, users, groups)
+    val users = if (recursive)
+        users.map { it.toDTO(false) }
+    else emptyList()
+
+    val groups = if (recursive)
+        groups.map { it.toDTO(false) }
+    else emptyList()
+
+    return RoleDTO(
+            id = id,
+            description = description,
+            title = title,
+            users = users,
+            groups = groups
+    )
 }
 
 data class UserDTO(val id: Long,

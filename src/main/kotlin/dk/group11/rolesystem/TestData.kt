@@ -25,12 +25,16 @@ class TestData(private val userRepository: UserRepository,
                 !groupRepository.existsByTitle("3.B")) {
 
 
-            roleRepository.save(
+            roleRepository.save(listOf(
                     Role(
                             title = "PartyManager",
                             description = "Manages parties"
+                    ),
+                    Role(
+                            title = "Teacher",
+                            description = "Teaches a class"
                     )
-            )
+            ))
             userRepository.save(listOf(
                     ApplicationUser(
                             name = "Sofie",
