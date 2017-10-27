@@ -1,8 +1,10 @@
 package dk.group11.rolesystem.services
 
+import dk.group11.rolesystem.auditClient.AuditClient
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
 import dk.group11.rolesystem.repositories.UserRepository
+import dk.group11.rolesystem.security.ISecurityService
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -10,10 +12,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
+data class createUserAuditEntry(val username: String, val name: String, val userId: Long)
 
 @Service
 class UserService(private val userRepository: UserRepository,
-                  private val bCryptPasswordEncoder: BCryptPasswordEncoder) : UserDetailsService {
+                  private val bCryptPasswordEncoder: BCryptPasswordEncoder,
+                  private val auditClient: AuditClient,
+                  private val security: ISecurityService) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails? {
         val user: ApplicationUser? = userRepository.findByUsername(username)
@@ -35,6 +40,9 @@ class UserService(private val userRepository: UserRepository,
     fun createUser(user: ApplicationUser): ApplicationUser {
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
+
+        auditClient.createEntry("[RoleSystem] User created", createUserAuditEntry(user.username, user.name, user.id), security.getToken())
+
         return user
     }
 
