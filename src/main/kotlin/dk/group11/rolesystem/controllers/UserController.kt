@@ -1,13 +1,14 @@
 package dk.group11.rolesystem.controllers
 
 import dk.group11.rolesystem.models.ApplicationUser
+import dk.group11.rolesystem.security.ISecurityService
 import dk.group11.rolesystem.services.UserService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(private val userService: UserService) {
-
+class UserController(private val userService: UserService,
+                     val securityService: ISecurityService) {
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): UserDTO {
@@ -17,6 +18,11 @@ class UserController(private val userService: UserService) {
     @GetMapping
     fun getUsers(): List<UserDTO> {
         return userService.getAllUsers().map { it.toDTO() }
+    }
+
+    @GetMapping("/me")
+    fun getMe(): UserDTO {
+        return userService.getUser(securityService.getId()).toDTO()
     }
 
     @GetMapping("/names")

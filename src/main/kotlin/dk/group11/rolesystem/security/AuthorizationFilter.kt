@@ -1,5 +1,6 @@
 package dk.group11.rolesystem.security
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.Jwts
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -29,8 +30,10 @@ class AuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticat
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                 .body.subject
 
+        val userData = ObjectMapper().readValue<AuthenticationFilter.UserData>(user, AuthenticationFilter.UserData::class.java)
+
         if (user != null) {
-            return UsernamePasswordAuthenticationToken(user, null, ArrayList())
+            return UsernamePasswordAuthenticationToken(userData, null, ArrayList())
         }
         return null
     }
