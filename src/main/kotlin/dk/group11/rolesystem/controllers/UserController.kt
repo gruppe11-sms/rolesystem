@@ -1,14 +1,20 @@
 package dk.group11.rolesystem.controllers
 
+import dk.group11.rolesystem.exceptions.BadRequestException
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.security.ISecurityService
 import dk.group11.rolesystem.services.UserService
+import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
 class UserController(private val userService: UserService,
-                     val securityService: ISecurityService) {
+                     val securityService: ISecurityService,
+                     val bCryptPasswordEncoder: BCryptPasswordEncoder) {
+
+    data class Password(val oldPassword: String = "", val newPassword: String = "")
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Long): UserDTO {
@@ -44,5 +50,19 @@ class UserController(private val userService: UserService,
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: Long) {
         userService.deleteUser(id)
+    }
+
+    @PostMapping("/changepassword")
+    fun changePassword(@RequestBody body: Password) {
+        val userId = securityService.getId()
+        val user = userService.getUser(userId)
+        if (BCrypt.checkpw(body.oldPassword, user.password)) {
+            user.password = bCryptPasswordEncoder.encode(body.newPassword)
+            userService.updateUser(user)
+        } else {
+            throw BadRequestException("Wrong Password")
+
+        }
+
     }
 }
