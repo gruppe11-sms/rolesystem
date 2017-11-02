@@ -1,6 +1,7 @@
 package dk.group11.rolesystem.services
 
 import dk.group11.rolesystem.auditClient.AuditClient
+import dk.group11.rolesystem.exceptions.BadRequestException
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
 import dk.group11.rolesystem.repositories.UserRepository
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -54,8 +56,8 @@ class UserService(private val userRepository: UserRepository,
         return userRepository.findAll().toList()
     }
 
-    fun updateUser(user: ApplicationUser) {
-        userRepository.save(user)
+    fun updateUser(user: ApplicationUser) : ApplicationUser{
+        return userRepository.save(user)
     }
 
     fun deleteUser(id: Long) {
@@ -68,5 +70,16 @@ class UserService(private val userRepository: UserRepository,
             return user
         } else
             throw UsernameNotFoundException(username)
+    }
+
+    fun changePassword(oldPassword: String, newPassword: String) {
+        val userid = security.getId()
+        val user = userRepository.findOne(userid)
+        if (BCrypt.checkpw(oldPassword, user.password)) {
+            user.password = bCryptPasswordEncoder.encode(newPassword)
+            userRepository.save(user)
+        } else {
+            throw BadRequestException("Wrong Password")
+        }
     }
 }

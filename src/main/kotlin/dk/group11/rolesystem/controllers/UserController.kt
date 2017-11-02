@@ -1,18 +1,19 @@
 package dk.group11.rolesystem.controllers
 
-import dk.group11.rolesystem.exceptions.BadRequestException
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.security.ISecurityService
+import dk.group11.rolesystem.services.GroupService
 import dk.group11.rolesystem.services.UserService
-import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 class UserController(private val userService: UserService,
                      val securityService: ISecurityService,
-                     val bCryptPasswordEncoder: BCryptPasswordEncoder) {
+                     val bCryptPasswordEncoder: BCryptPasswordEncoder,
+                     val groupService: GroupService) {
 
     data class Password(val oldPassword: String = "", val newPassword: String = "")
 
@@ -38,13 +39,13 @@ class UserController(private val userService: UserService,
     }
 
     @PostMapping
-    fun createUser(@RequestBody user: ApplicationUser): ApplicationUser {
-        return userService.createUser(user)
+    fun createUser(@RequestBody user: ApplicationUser): UserDTO {
+        return userService.createUser(user).toDTO()
     }
 
     @PutMapping
-    fun updateUser(@RequestBody user: ApplicationUser) {
-        userService.updateUser(user)
+    fun updateUser(@RequestBody user: ApplicationUser): UserDTO {
+        return userService.updateUser(user).toDTO()
     }
 
     @DeleteMapping("/{id}")
@@ -54,15 +55,16 @@ class UserController(private val userService: UserService,
 
     @PostMapping("/changepassword")
     fun changePassword(@RequestBody body: Password) {
-        val userId = securityService.getId()
-        val user = userService.getUser(userId)
-        if (BCrypt.checkpw(body.oldPassword, user.password)) {
-            user.password = bCryptPasswordEncoder.encode(body.newPassword)
-            userService.updateUser(user)
-        } else {
-            throw BadRequestException("Wrong Password")
-
-        }
-
+        userService.changePassword(body.oldPassword, body.newPassword)
     }
+
+    @PutMapping("/{id}/groups")
+    fun updateUserGroups(@PathVariable id: Long, @RequestParam(name = "groups") groupIds: String) {
+        val ids = groupIds.split(delimiters = ",").mapNotNull { s -> s.toLongOrNull() }
+        val user = userService.getUser(id)
+        val groups = groupService.getGroups(ids)
+        user.groups = groups.toMutableList()
+        userService.updateUser(user)
+    }
+
 }

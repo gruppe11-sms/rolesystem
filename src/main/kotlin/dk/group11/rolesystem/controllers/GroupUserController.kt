@@ -34,4 +34,13 @@ class GroupUserController(private val groupService: GroupService,
         group.members.addAll(users)
         groupService.updateGroup(group)
     }
+
+    /*@PutMapping
+    fun updateGroupUsers(@PathVariable id: Long, @RequestParam(name = "groupids") groupIds: String) {
+        val ids = groupIds.split(delimiters = ",").mapNotNull { s -> s.toLongOrNull() }
+        val user = userService.getUser(id)
+        val roles = roleService.getRoles(ids)
+        user.roles.addAll(roles)
+        userService.updateUser(user)
+    }*/
 }

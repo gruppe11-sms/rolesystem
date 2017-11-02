@@ -1,17 +1,20 @@
 package dk.group11.rolesystem.controllers
 
 import dk.group11.rolesystem.models.Role
+import dk.group11.rolesystem.services.RoleService
 import dk.group11.rolesystem.services.UserService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users/{id}/roles")
-class UserRoleController(val userService: UserService) {
+class UserRoleController(private val userService: UserService, private val roleService: RoleService) {
 
     @PutMapping
-    fun updateUserRole(@PathVariable id: Long, @RequestBody role: Role) {
+    fun updateUserRole(@PathVariable id: Long, @RequestParam(name = "roles") roleIds: String) {
+        val ids = roleIds.split(delimiters = ",").mapNotNull { s -> s.toLongOrNull() }
         val user = userService.getUser(id)
-        user.roles.add(role)
+        val roles = roleService.getRoles(ids)
+        user.roles = roles.toMutableList()
         userService.updateUser(user)
     }
 

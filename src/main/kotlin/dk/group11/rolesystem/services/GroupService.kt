@@ -11,6 +11,10 @@ class GroupService(private val groupRepository: GroupRepository) {
         return groupRepository.findAll().toList()
     }
 
+    fun getGroups(ids: List<Long>): List<ApplicationGroup> {
+        return groupRepository.findAll(ids).toList()
+    }
+
     fun getGroup(id: Long): ApplicationGroup {
         return groupRepository.findOne(id)
     }
