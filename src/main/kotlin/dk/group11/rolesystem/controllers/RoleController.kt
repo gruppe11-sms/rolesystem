@@ -4,33 +4,22 @@ import dk.group11.rolesystem.models.Role
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @RequestMapping("/api/roles")
 class RoleController(val roleService: RoleService) {
 
     @GetMapping
-    fun getRoles(): List<RoleDTO> {
-        return roleService.getRoles().map { it.toDTO(false) }
-    }
+    fun getRoles(): List<RoleDTO> = roleService.getRoles().map { it.toDTO(false) }
 
     @GetMapping("/{id}")
-    fun getRole(@PathVariable id: Long): RoleDTO {
-        return roleService.getRole(id).toDTO()
-    }
+    fun getRole(@PathVariable id: Long): RoleDTO = roleService.getRole(id).toDTO()
 
     @PostMapping
-    fun createRoles(@RequestBody role: Role) {
-        roleService.createRole(role)
-    }
+    fun createRoles(@RequestBody role: Role) = roleService.createRole(role)
 
     @PutMapping
-    fun updateRole(@RequestBody role: Role) {
-        roleService.updateRole(role)
-    }
+    fun updateRole(@RequestBody role: Role) = roleService.updateRole(role)
 
     @DeleteMapping("/{id}")
-    fun deleteRole(@PathVariable id: Long) {
-        roleService.deleteRole(id)
-    }
+    fun deleteRole(@PathVariable id: Long) = roleService.deleteRole(id)
 }

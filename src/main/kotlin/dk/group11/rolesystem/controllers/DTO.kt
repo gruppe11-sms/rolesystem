@@ -5,12 +5,10 @@ import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.Role
 
 fun ApplicationUser.toDTO(recursive: Boolean = true): UserDTO {
-    val roles = if (recursive)
-        roles.map { it.toDTO(false) }
+    val roles = if (recursive) roles.map { it.toDTO(false) }
     else emptyList()
 
-    val groups = if (recursive)
-        groups.map { it.toDTO(false) }
+    val groups = if (recursive) groups.map { it.toDTO(false) }
     else emptyList()
 
     return UserDTO(
@@ -24,12 +22,10 @@ fun ApplicationUser.toDTO(recursive: Boolean = true): UserDTO {
 }
 
 fun ApplicationGroup.toDTO(recursive: Boolean = true): GroupDTO {
-    val members = if (recursive)
-        members.map { it.toDTO(false) }
+    val members = if (recursive) members.map { it.toDTO(false) }
     else emptyList()
 
-    val roles = if (recursive)
-        roles.map { it.toDTO(false) }
+    val roles = if (recursive) roles.map { it.toDTO(false) }
     else emptyList()
 
     return GroupDTO(
@@ -42,12 +38,10 @@ fun ApplicationGroup.toDTO(recursive: Boolean = true): GroupDTO {
 }
 
 fun Role.toDTO(recursive: Boolean = true): RoleDTO {
-    val users = if (recursive)
-        users.map { it.toDTO(false) }
+    val users = if (recursive) users.map { it.toDTO(false) }
     else emptyList()
 
-    val groups = if (recursive)
-        groups.map { it.toDTO(false) }
+    val groups = if (recursive) groups.map { it.toDTO(false) }
     else emptyList()
 
     return RoleDTO(

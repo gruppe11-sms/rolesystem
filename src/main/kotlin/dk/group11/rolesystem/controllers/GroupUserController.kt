@@ -10,22 +10,16 @@ class GroupUserController(private val groupService: GroupService,
                           private val userService: UserService) {
 
     @GetMapping
-    fun getGroupUsers(@PathVariable groupId: Long): List<UserDTO> {
-        return groupService.getGroup(groupId).members.map { it.toDTO() }
-    }
+    fun getGroupUsers(@PathVariable groupId: Long): List<UserDTO> =
+            groupService.getGroup(groupId).members.map { it.toDTO() }
 
     @GetMapping("/{userId}")
-    fun getGroupUser(@PathVariable userId: Long): List<GroupDTO> {
-        return groupService.getGroupsByMemberId(userId).map { it.toDTO() }
-    }
+    fun getGroupUser(@PathVariable userId: Long): List<GroupDTO> =
+            groupService.getGroupsByMemberId(userId).map { it.toDTO() }
 
     @PostMapping("/{userId}")
-    fun addGroupUser(@PathVariable groupId: Long, @PathVariable userId: Long) {
-        val group = groupService.getGroup(groupId)
-        val user = userService.getUser(groupId)
-        group.members.add(user)
-        groupService.updateGroup(group)
-    }
+    fun addGroupUser(@PathVariable groupId: Long, @PathVariable userId: Long) =
+            groupService.addGroupUser(groupId = groupId, userId = userId)
 
     @PostMapping
     fun addGroupUsers(@PathVariable groupId: Long, @RequestBody userIds: List<Long>) {

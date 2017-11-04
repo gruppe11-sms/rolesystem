@@ -9,27 +9,17 @@ import org.springframework.web.bind.annotation.*
 class GroupController(val groupService: GroupService) {
 
     @GetMapping
-    fun getGroups(): List<GroupDTO> {
-        return groupService.getGroups().map { it.toDTO() }
-    }
+    fun getGroups(): List<GroupDTO> = groupService.getGroups().map { it.toDTO() }
 
     @GetMapping("/{id}")
-    fun getGroup(@PathVariable id: Long): GroupDTO {
-        return groupService.getGroup(id).toDTO()
-    }
+    fun getGroup(@PathVariable id: Long): GroupDTO = groupService.getGroup(id).toDTO()
 
     @PostMapping
-    fun createGroups(@RequestBody group: ApplicationGroup) {
-        groupService.createGroup(group)
-    }
+    fun createGroups(@RequestBody group: ApplicationGroup) = groupService.createGroup(group)
 
     @PutMapping
-    fun updateGroup(@RequestBody group: ApplicationGroup) {
-        groupService.updateGroup(group)
-    }
+    fun updateGroup(@RequestBody group: ApplicationGroup) = groupService.updateGroup(group)
 
     @DeleteMapping("/{id}")
-    fun deleteGroup(@PathVariable id: Long) {
-        groupService.deleteGroup(id)
-    }
+    fun deleteGroup(@PathVariable id: Long) = groupService.deleteGroup(id)
 }

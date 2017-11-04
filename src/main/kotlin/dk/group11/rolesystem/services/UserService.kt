@@ -18,7 +18,8 @@ data class createUserAuditEntry(val username: String, val name: String, val user
 class UserService(private val userRepository: UserRepository,
                   private val bCryptPasswordEncoder: BCryptPasswordEncoder,
                   private val auditClient: AuditClient,
-                  private val security: ISecurityService) : UserDetailsService {
+                  private val security: ISecurityService,
+                  private val roleService: RoleService) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails? {
         val user: ApplicationUser? = userRepository.findByUsername(username)
@@ -68,5 +69,18 @@ class UserService(private val userRepository: UserRepository,
             return user
         } else
             throw UsernameNotFoundException(username)
+    }
+
+    fun addUserRole(userId: Long, roleId: Long) {
+        val user = userRepository.findOne(userId)
+        val role = roleService.getRole(roleId)
+        user.roles.add(role)
+        userRepository.save(user)
+    }
+
+    fun removeUserRole(userId: Long, roleId: Long) {
+        val user = userRepository.findOne(userId)
+        user.roles.removeIf { it.id == roleId }
+        userRepository.save(user)
     }
 }

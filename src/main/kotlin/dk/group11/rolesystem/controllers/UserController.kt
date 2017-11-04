@@ -1,6 +1,7 @@
 package dk.group11.rolesystem.controllers
 
 import dk.group11.rolesystem.exceptions.BadRequestException
+import dk.group11.rolesystem.helpers.toIDList
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.security.ISecurityService
 import dk.group11.rolesystem.services.UserService
@@ -10,47 +11,32 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(private val userService: UserService,
-                     val securityService: ISecurityService,
+class UserController(private val userService: UserService, private val securityService: ISecurityService,
                      val bCryptPasswordEncoder: BCryptPasswordEncoder) {
 
     data class Password(val oldPassword: String = "", val newPassword: String = "")
 
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Long): UserDTO {
-        return userService.getUser(id).toDTO()
-    }
+    fun getUser(@PathVariable id: Long): UserDTO = userService.getUser(id).toDTO()
 
     @GetMapping
-    fun getUsers(): List<UserDTO> {
-        return userService.getAllUsers().map { it.toDTO() }
-    }
+    fun getUsers(): List<UserDTO> = userService.getAllUsers().map { it.toDTO() }
 
     @GetMapping("/me")
-    fun getMe(): UserDTO {
-        return userService.getUser(securityService.getId()).toDTO()
-    }
+    fun getMe(): UserDTO = userService.getUser(securityService.getId()).toDTO()
 
     @GetMapping("/names")
-    fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> {
-        val ids = userIds.split(delimiters = ",").mapNotNull { s -> s.toLongOrNull() }
-        return userService.getUsers(ids).map { it.id to it.name }.toMap()
-    }
+    fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> =
+            userService.getUsers(userIds.toIDList()).map { it.id to it.name }.toMap()
 
     @PostMapping
-    fun createUser(@RequestBody user: ApplicationUser): ApplicationUser {
-        return userService.createUser(user)
-    }
+    fun createUser(@RequestBody user: ApplicationUser): UserDTO = userService.createUser(user).toDTO()
 
     @PutMapping
-    fun updateUser(@RequestBody user: ApplicationUser) {
-        userService.updateUser(user)
-    }
+    fun updateUser(@RequestBody user: ApplicationUser) = userService.updateUser(user)
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Long) {
-        userService.deleteUser(id)
-    }
+    fun deleteUser(@PathVariable id: Long) = userService.deleteUser(id)
 
     @PostMapping("/changepassword")
     fun changePassword(@RequestBody body: Password) {
