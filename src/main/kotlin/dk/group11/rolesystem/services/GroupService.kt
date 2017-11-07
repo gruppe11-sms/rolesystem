@@ -26,4 +26,10 @@ class GroupService(private val groupRepository: GroupRepository,
         group.members.add(user)
         groupRepository.save(group)
     }
+
+    fun removeGroupUser(groupId: Long, userId: Long) {
+        val group = groupRepository.findOne(groupId)
+        group.members.removeIf { it.id == userId }
+        groupRepository.save(group)
+    }
 }

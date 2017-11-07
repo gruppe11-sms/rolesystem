@@ -21,6 +21,10 @@ class GroupUserController(private val groupService: GroupService,
     fun addGroupUser(@PathVariable groupId: Long, @PathVariable userId: Long) =
             groupService.addGroupUser(groupId = groupId, userId = userId)
 
+    @DeleteMapping("/{userId}")
+    fun removeGroupUser(@PathVariable groupId: Long, @PathVariable userId: Long) =
+            groupService.removeGroupUser(groupId = groupId, userId = userId)
+
     @PostMapping
     fun addGroupUsers(@PathVariable groupId: Long, @RequestBody userIds: List<Long>) {
         val group = groupService.getGroup(groupId)
