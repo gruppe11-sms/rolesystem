@@ -10,29 +10,22 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuditClient(val auditConfigProperties: AuditConfigProperties) {
-
     fun createEntry(action: String, data: Any, authToken: String) {
-        val json = getJson(action, data)
-        println(json)
-        val (request, response, result) = Fuel.post(auditConfigProperties.url + "/api/auditentry")
+        Fuel.post(auditConfigProperties.url + "/api/auditentry")
                 .header(Pair(HEADER_STRING, authToken))
                 .header(Pair("Content-Type", "application/json"))
-                .body(json)
+                .body(getJson(action, data))
                 .responseString()
-
-        println(result)
-    }
-
-    private fun getJson(action: String, data: Any): String {
-
-        val requestData = if (BeanUtils.isSimpleValueType(data::class.java)) data.toString() else {
-            ObjectMapper().writeValueAsString(data)
-        }
-        val request = AuditRequest(action, requestData)
-
-        return ObjectMapper().writeValueAsString(request)
     }
 }
+
+private fun getJson(action: String, data: Any): String {
+    val requestData = if (BeanUtils.isSimpleValueType(data::class.java)) data.toString()
+    else ObjectMapper().writeValueAsString(data)
+    val request = AuditRequest(action, requestData)
+    return ObjectMapper().writeValueAsString(request)
+}
+
 
 data class AuditRequest(val action: String, val data: Any)
 

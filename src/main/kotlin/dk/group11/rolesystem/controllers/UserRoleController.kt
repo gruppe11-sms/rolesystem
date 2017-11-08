@@ -1,5 +1,6 @@
 package dk.group11.rolesystem.controllers
 
+import dk.group11.rolesystem.helpers.toIDList
 import dk.group11.rolesystem.services.UserService
 import org.springframework.web.bind.annotation.*
 
@@ -12,8 +13,8 @@ class UserRoleController(val userService: UserService) {
             userService.getUser(userId).roles.map { it.toDTO() }
 
     @PutMapping("/{roleId}")
-    fun updateUserRole(@PathVariable userId: Long, @PathVariable roleId: Long) =
-            userService.addUserRole(userId = userId, roleId = roleId)
+    fun updateUserRole(@PathVariable userId: Long, @RequestParam roleIdParam: String) =
+            userService.updateUserRoles(userId = userId, roleIds = roleIdParam.toIDList())
 
     @DeleteMapping("/{roleId}")
     fun deleteUserRole(@PathVariable userId: Long, @PathVariable roleId: Long) =

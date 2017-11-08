@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository
 interface RoleRepository : CrudRepository<Role, Long> {
     fun existsByTitle(title: String): Boolean
     fun findByTitle(s: String): Role?
+    fun findById(roleIds: List<Long>): List<Role>
 }
