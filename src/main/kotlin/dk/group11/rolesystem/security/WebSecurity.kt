@@ -23,12 +23,7 @@ class WebSecurity(private val userDetailsService: UserDetailsService,
 
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/api/auth/login")
-                .loginProcessingUrl("/api/auth/login").permitAll()
                 .and()
                 .addFilter(AuthenticationFilter(authenticationManager(), userService, auditClient))
                 .addFilter(AuthorizationFilter(authenticationManager()))
@@ -41,7 +36,11 @@ class WebSecurity(private val userDetailsService: UserDetailsService,
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
+        val conf = CorsConfiguration()
+        conf.addAllowedHeader("*")
+        conf.addAllowedMethod("*")
+        conf.addAllowedOrigin("*")
+        source.registerCorsConfiguration("/**", conf)
         return source
     }
 }
