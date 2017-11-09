@@ -12,8 +12,8 @@ class UserRoleController(val userService: UserService) {
     fun getUserRoles(@PathVariable userId: Long): List<RoleDTO> =
             userService.getUser(userId).roles.map { it.toDTO() }
 
-    @PutMapping("/{roleId}")
-    fun updateUserRole(@PathVariable userId: Long, @RequestParam roleIdParam: String) =
+    @PutMapping
+    fun updateUserRole(@PathVariable userId: Long, @RequestParam(value = "roles") roleIdParam: String) =
             userService.updateUserRoles(userId = userId, roleIds = roleIdParam.toIDList())
 
     @DeleteMapping("/{roleId}")

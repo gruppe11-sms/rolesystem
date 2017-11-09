@@ -24,7 +24,6 @@ class TestData(private val userRepository: UserRepository,
                 !userRepository.existsByUsername("emikr15") &&
                 !groupRepository.existsByTitle("3.B")) {
 
-
             roleRepository.save(listOf(
                     Role(
                             title = "PartyManager",
@@ -47,30 +46,24 @@ class TestData(private val userRepository: UserRepository,
                             password = bCryptPasswordEncoder.encode("1234")
                     )
             ))
-
             groupRepository.save(
                     ApplicationGroup(
                             title = "3.B",
                             description = "Member of class 3.B"
                     )
-
             )
             val group = groupRepository.findByTitle("3.B")
             val user = userRepository.findByUsername("sofie12")
             val role = roleRepository.findByTitle("PartyManager")
 
             if (role != null && user != null) {
-                println("Adding user")
                 user.roles.add(role)
                 userRepository.save(user)
-                roleRepository.save(role)
             }
 
             if (group != null && user != null) {
-                println("adding user to group")
                 group.members.add(user)
                 groupRepository.save(group)
-                userRepository.save(user)
             }
         }
     }

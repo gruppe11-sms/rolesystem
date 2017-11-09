@@ -11,10 +11,6 @@ class RoleService(private val roleRepository: RoleRepository) {
         return roleRepository.findAll().toList()
     }
 
-    fun getRoles(roleIds: List<Long>): List<Role> {
-        return roleRepository.findById(roleIds).toList()
-    }
-
     fun getRole(id: Long): Role {
         return roleRepository.findOne(id)
     }
