@@ -30,7 +30,7 @@ class UserController(private val userService: UserService, private val securityS
             userService.getUsers(userIds.toIDList()).map { it.id to it.name }.toMap()
 
     @PostMapping
-    fun createUser(@RequestBody user: ApplicationUser): UserDTO = userService.createUser(user).toDTO()
+    fun createUser(@RequestBody user: ApplicationUser) = userService.createUser(user)
 
     @PutMapping
     fun updateUser(@RequestBody user: ApplicationUser) = userService.updateUser(user)

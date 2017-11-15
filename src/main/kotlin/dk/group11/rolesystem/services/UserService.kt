@@ -46,13 +46,11 @@ class UserService(private val userRepository: UserRepository,
         }
     }
 
-    fun createUser(user: ApplicationUser): ApplicationUser {
+    fun createUser(user: ApplicationUser) {
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
 
         auditClient.createEntry("[RoleSystem] User created", user.toAuditEntry(), security.getToken())
-
-        return user
     }
 
     fun getUsers(ids: List<Long>): List<ApplicationUser> {
@@ -97,8 +95,7 @@ class UserService(private val userRepository: UserRepository,
         val role = roleRepository.findOne(roleId)
         user.roles.remove(role)
         userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] Roles removed",
-                UserWithRole(user.toAuditEntry(), role.toAuditEntry()), security.getToken()
+        auditClient.createEntry("[RoleSystem] Roles removed", UserWithRole(user.toAuditEntry(), role.toAuditEntry()), security.getToken()
         )
     }
 
