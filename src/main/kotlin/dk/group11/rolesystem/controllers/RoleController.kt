@@ -11,15 +11,18 @@ class RoleController(val roleService: RoleService) {
     @GetMapping
     fun getRoles(): List<RoleDTO> = roleService.getRoles().map { it.toDTO(false) }
 
-    @GetMapping("/{id}")
-    fun getRole(@PathVariable id: Long): RoleDTO = roleService.getRole(id).toDTO()
+    @GetMapping("/{key}")
+    fun getRole(@PathVariable key: String): RoleDTO {
+        return roleService.getRole(key).toDTO()
+    }
+
+    @PutMapping("/{key}")
+    fun updateRole(@RequestBody role: Role) {
+        roleService.updateRole(role)
+    }
 
     @PostMapping
-    fun createRoles(@RequestBody role: Role) = roleService.createRole(role)
-
-    @PutMapping
-    fun updateRole(@RequestBody role: Role) = roleService.updateRole(role)
-
-    @DeleteMapping("/{id}")
-    fun deleteRole(@PathVariable id: Long) = roleService.deleteRole(id)
+    fun createRole(@RequestBody role: Role): RoleDTO {
+        return roleService.addRole(key = role.key, description = role.description, title = role.title).toDTO(false)
+    }
 }

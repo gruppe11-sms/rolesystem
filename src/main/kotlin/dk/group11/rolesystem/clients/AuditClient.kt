@@ -1,4 +1,4 @@
-package dk.group11.rolesystem.auditClient
+package dk.group11.rolesystem.clients
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.kittinunf.fuel.Fuel

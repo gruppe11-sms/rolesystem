@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.security
 
-import dk.group11.rolesystem.auditClient.AuditClient
+import dk.group11.rolesystem.clients.AuditClient
 import dk.group11.rolesystem.services.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod

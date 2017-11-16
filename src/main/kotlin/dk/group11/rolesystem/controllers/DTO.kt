@@ -45,7 +45,7 @@ fun Role.toDTO(recursive: Boolean = true): RoleDTO {
     else emptyList()
 
     return RoleDTO(
-            id = id,
+            key = key,
             description = description,
             title = title,
             users = users,
@@ -66,7 +66,7 @@ data class GroupDTO(val id: Long,
                     val members: List<UserDTO> = emptyList(),
                     var roles: List<RoleDTO> = emptyList())
 
-data class RoleDTO(val id: Long,
+data class RoleDTO(val key: String,
                    val title: String,
                    val description: String,
                    val users: List<UserDTO> = emptyList(),

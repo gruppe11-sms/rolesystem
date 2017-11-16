@@ -1,8 +1,8 @@
 package dk.group11.rolesystem.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dk.group11.rolesystem.auditClient.AuditClient
-import dk.group11.rolesystem.auditClient.LoginAuditEntryData
+import dk.group11.rolesystem.clients.AuditClient
+import dk.group11.rolesystem.clients.LoginAuditEntryData
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
 import dk.group11.rolesystem.services.UserService

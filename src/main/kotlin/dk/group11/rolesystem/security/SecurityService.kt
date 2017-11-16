@@ -18,4 +18,5 @@ class SecurityService(private val request: HttpServletRequest) : ISecurityServic
 
     val principal: AuthenticationFilter.UserData
         get() = SecurityContextHolder.getContext().authentication.principal as AuthenticationFilter.UserData
+
 }

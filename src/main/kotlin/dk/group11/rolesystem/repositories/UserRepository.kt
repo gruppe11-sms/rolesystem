@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository
 interface UserRepository : CrudRepository<ApplicationUser, Long> {
     fun findByUsername(username: String): ApplicationUser?
     fun existsByUsername(s: String): Boolean
+    fun findBySystemRef(systemRef: Long): ApplicationUser?
 }

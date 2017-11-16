@@ -1,8 +1,8 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.auditClient.AuditClient
-import dk.group11.rolesystem.auditClient.UserWithGroup
-import dk.group11.rolesystem.auditClient.toAuditEntry
+import dk.group11.rolesystem.clients.AuditClient
+import dk.group11.rolesystem.clients.UserWithGroup
+import dk.group11.rolesystem.clients.toAuditEntry
 import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.repositories.GroupRepository
 import dk.group11.rolesystem.repositories.UserRepository

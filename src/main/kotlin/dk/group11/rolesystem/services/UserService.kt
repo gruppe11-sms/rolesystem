@@ -1,6 +1,6 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.auditClient.*
+import dk.group11.rolesystem.clients.*
 import dk.group11.rolesystem.exceptions.BadRequestException
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
@@ -80,7 +80,7 @@ class UserService(private val userRepository: UserRepository,
             throw UsernameNotFoundException(username)
     }
 
-    fun addUserRole(userId: Long, roleId: Long) {
+    fun addUserRole(userId: Long, roleId: String) {
         val user = userRepository.findOne(userId)
         val role = roleRepository.findOne(roleId)
         user.roles.add(role)
@@ -90,7 +90,7 @@ class UserService(private val userRepository: UserRepository,
         )
     }
 
-    fun removeUserRole(userId: Long, roleId: Long) {
+    fun removeUserRole(userId: Long, roleId: String) {
         val user = userRepository.findOne(userId)
         val role = roleRepository.findOne(roleId)
         user.roles.remove(role)
@@ -99,10 +99,10 @@ class UserService(private val userRepository: UserRepository,
         )
     }
 
-    fun updateUserRoles(userId: Long, roleIds: List<Long>) {
+    fun updateUserRoles(userId: Long, roleIds: List<String>) {
         val user = userRepository.findOne(userId)
         val roles = roleRepository.findAll(roleIds)
-        user.roles = roles.toMutableList()
+        user.roles = roles.toMutableSet()
         userRepository.save(user)
         auditClient.createEntry("[RoleSystem] Roles updated",
                 UserWithRoles(user.toAuditEntry(), roles.map { it.toAuditEntry() }), security.getToken()
@@ -112,7 +112,7 @@ class UserService(private val userRepository: UserRepository,
     fun updateUserGroup(userId: Long, groupIds: List<Long>) {
         val user = userRepository.findOne(userId)
         val groups = groupRepository.findAll(groupIds)
-        user.groups = groups.toMutableList()
+        user.groups = groups.toMutableSet()
         userRepository.save(user)
         auditClient.createEntry("[RoleSystem] Groups updated",
                 UserWithGroups(user = user.toAuditEntry(), group = groups.map { it.toAuditEntry() }),
