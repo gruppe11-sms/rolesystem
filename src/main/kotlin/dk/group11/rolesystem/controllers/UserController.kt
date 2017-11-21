@@ -5,6 +5,7 @@ import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.VerifyResponse
 import dk.group11.rolesystem.security.ISecurityService
 import dk.group11.rolesystem.services.RoleService
+import dk.group11.rolesystem.services.RoleVerifierService
 import dk.group11.rolesystem.services.UserService
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -16,7 +17,8 @@ class UserController(
         private val userService: UserService,
         private val securityService: ISecurityService,
         private val bCryptPasswordEncoder: BCryptPasswordEncoder,
-        private val roleService: RoleService
+        private val roleService: RoleService,
+        private val roleVerifierService: RoleVerifierService
 ) {
 
     data class Password(val oldPassword: String = "", val newPassword: String = "")
@@ -59,7 +61,7 @@ class UserController(
     @GetMapping("/verify")
     fun verifyRoles(@RequestParam("roles") roleKeys: String): VerifyResponse {
         val keys = roleKeys.split(",")
-        val success = roleService.hasRoles(*keys.toTypedArray())
+        val success = roleVerifierService.hasRoles(securityService.getId(), *keys.toTypedArray())
         return VerifyResponse(success)
     }
 }

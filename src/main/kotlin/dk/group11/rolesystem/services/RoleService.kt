@@ -31,6 +31,7 @@ class RoleService(
      * otherwise it's created
      */
     fun addRole(key: String, title: String, description: String): Role {
+
         val existingRole = roleRepository.findOne(key)
         if (existingRole != null) {
             return existingRole
@@ -39,11 +40,4 @@ class RoleService(
         return roleRepository.save(role)
     }
 
-    /**
-     * Checks if a user has a role
-     */
-    fun hasRoles(vararg roleKeys: String): Boolean {
-        val currentUser = userRepository.findOne(securityService.getId())
-        return currentUser.roles.map { it.key }.containsAll(roleKeys.toList())
-    }
 }
