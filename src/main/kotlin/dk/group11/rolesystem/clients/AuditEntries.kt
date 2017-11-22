@@ -15,5 +15,5 @@ class LoginAuditEntryData(val username: String, val userId: Long)
 
 
 fun ApplicationUser.toAuditEntry(): UserAuditEntry = UserAuditEntry(username = this.username, name = this.name, userId = this.id)
-fun Role.toAuditEntry(): RoleAuditEntry = RoleAuditEntry(key = this.key, description = this.description, title = this.title)
+fun Role.toAuditEntry(): RoleAuditEntry = RoleAuditEntry(key = this.id, description = this.description, title = this.title)
 fun ApplicationGroup.toAuditEntry(): GroupAuditEntry = GroupAuditEntry(id = this.id, description = this.description, title = this.title)

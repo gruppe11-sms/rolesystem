@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany
 @Entity
 class Role(
         @Id
-        var key: String = "",
+        var id: String = "",
         var title: String = "",
         var description: String = "",
         @ManyToMany(mappedBy = "roles", cascade = arrayOf(CascadeType.ALL))
@@ -22,12 +22,12 @@ class Role(
 
         other as Role
 
-        if (key != other.key) return false
+        if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return key.hashCode()
+        return id.hashCode()
     }
 }

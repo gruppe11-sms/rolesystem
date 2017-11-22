@@ -45,7 +45,7 @@ fun Role.toDTO(recursive: Boolean = true): RoleDTO {
     else emptyList()
 
     return RoleDTO(
-            key = key,
+            key = id,
             description = description,
             title = title,
             users = users,

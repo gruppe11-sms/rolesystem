@@ -11,6 +11,6 @@ class RoleVerifierService(private val userRepository: UserRepository) {
      */
     fun hasRoles(userId: Long, vararg roleKeys: String): Boolean {
         val currentUser = userRepository.findOne(userId)
-        return currentUser.roles.map { it.key }.containsAll(roleKeys.toList())
+        return currentUser.roles.map { it.id }.containsAll(roleKeys.toList())
     }
 }
