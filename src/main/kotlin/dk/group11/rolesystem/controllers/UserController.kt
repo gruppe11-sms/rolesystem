@@ -37,10 +37,10 @@ class UserController(
             userService.getUsers(userIds.split(",").mapNotNull { it.toLongOrNull() }).map { it.id to it.name }.toMap()
 
     @PostMapping
-    fun createUser(@RequestBody user: ApplicationUser) = userService.createUser(user)
+    fun createUser(@RequestBody user: ApplicationUser) = userService.createUser(user).toDTO(true)
 
     @PutMapping
-    fun updateUser(@RequestBody user: ApplicationUser) = userService.updateUser(user)
+    fun updateUser(@RequestBody user: ApplicationUser) = userService.updateUser(user).toDTO(true)
 
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: Long) = userService.deleteUser(id)

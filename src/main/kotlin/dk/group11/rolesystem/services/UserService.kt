@@ -46,11 +46,18 @@ class UserService(private val userRepository: UserRepository,
         }
     }
 
-    fun createUser(user: ApplicationUser) {
+    fun createUser(user: ApplicationUser): ApplicationUser {
+        if (userRepository.existsByUsername(user.username)) {
+            throw BadRequestException("Username already in use")
+        }
+
+
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
 
         auditClient.createEntry("[RoleSystem] User created", user.toAuditEntry(), security.getToken())
+
+        return user
     }
 
     fun getUsers(ids: List<Long>): List<ApplicationUser> {
@@ -61,9 +68,11 @@ class UserService(private val userRepository: UserRepository,
         return userRepository.findAll().toList()
     }
 
-    fun updateUser(user: ApplicationUser) {
+    fun updateUser(user: ApplicationUser): ApplicationUser {
         userRepository.save(user)
         auditClient.createEntry("[RoleSystem] User updated", user.toAuditEntry(), security.getToken())
+
+        return user
     }
 
     fun deleteUser(id: Long) {

@@ -8,6 +8,7 @@ class ApplicationUser(
         var id: Long = 0,
         var name: String = "",
         var password: String = "",
+        @Column(unique = true)
         var username: String = "",
         @ManyToMany(cascade = arrayOf(CascadeType.ALL))
         @JoinColumn
