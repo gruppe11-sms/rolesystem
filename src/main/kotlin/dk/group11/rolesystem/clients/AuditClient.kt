@@ -3,14 +3,15 @@ package dk.group11.rolesystem.clients
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.kittinunf.fuel.Fuel
 import dk.group11.rolesystem.security.HEADER_STRING
+import dk.group11.rolesystem.security.SecurityService
 import org.springframework.beans.BeanUtils
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 
 @Service
-class AuditClient(val auditConfigProperties: AuditConfigProperties) {
-    fun createEntry(action: String, data: Any, authToken: String) {
+class AuditClient(val auditConfigProperties: AuditConfigProperties, private val securityService: SecurityService) {
+    fun createEntry(action: String, data: Any, authToken: String = securityService.getToken()) {
         Fuel.post(auditConfigProperties.url + "/api/auditentry")
                 .header(Pair(HEADER_STRING, authToken))
                 .header(Pair("Content-Type", "application/json"))

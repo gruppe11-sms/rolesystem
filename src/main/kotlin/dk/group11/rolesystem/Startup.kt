@@ -2,6 +2,7 @@ package dk.group11.rolesystem
 
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.repositories.UserRepository
+import dk.group11.rolesystem.security.GroupMaintainerRole
 import dk.group11.rolesystem.security.RoleCreatorRole
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.boot.ApplicationArguments
@@ -34,6 +35,11 @@ class Startup(
                 "Role creator",
                 "Can create new roles"
         )
+        val groupMaintainerRole = roleService.addRole(
+                GroupMaintainerRole,
+                "Group Maintainer",
+                "Can maintain groups by deleting, updating, and creating "
+        )
 
         val systemPasswordPath = Paths.get("./system_password")
         val systemPassword = try {
@@ -61,6 +67,7 @@ class Startup(
         ))
 
         sysadmin.roles.add(roleCreatorRole)
+        sysadmin.roles.add(groupMaintainerRole)
         userRepository.save(sysadmin)
 
         systemUser.roles.add(roleCreatorRole)

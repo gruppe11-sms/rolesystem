@@ -51,7 +51,6 @@ class UserService(private val userRepository: UserRepository,
             throw BadRequestException("Username already in use")
         }
 
-
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
 

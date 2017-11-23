@@ -28,12 +28,17 @@ fun ApplicationGroup.toDTO(recursive: Boolean = true): GroupDTO {
     val roles = if (recursive) roles.map { it.toDTO(false) }
     else emptyList()
 
+    val groupsIn = if (recursive) groupsIn.map { it.toDTO(false) } else emptyList()
+    val inGroups = if (recursive) inGroups.map { it.toDTO(false) } else emptyList()
+
     return GroupDTO(
             id = id,
             title = title,
             description = description,
             members = members,
-            roles = roles
+            roles = roles,
+            groupsIn = groupsIn,
+            inGroups = inGroups
     )
 }
 
@@ -64,7 +69,10 @@ data class GroupDTO(val id: Long,
                     val title: String,
                     val description: String,
                     val members: List<UserDTO> = emptyList(),
-                    var roles: List<RoleDTO> = emptyList())
+                    val roles: List<RoleDTO> = emptyList(),
+                    val groupsIn: List<GroupDTO> = emptyList(),
+                    val inGroups: List<GroupDTO> = emptyList()
+)
 
 data class RoleDTO(val id: String,
                    val title: String,
