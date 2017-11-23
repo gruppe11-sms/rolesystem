@@ -65,10 +65,10 @@ class GroupService(private val groupRepository: GroupRepository,
                 group.members.map { userRepository.findOne(it.id) }
         )
 
+        currentGroup.groupsIn.forEach { it.inGroups.remove(currentGroup) }
         group.groupsIn.forEach {
             val otherGroup = groupRepository.findOne(it.id)
-            otherGroup.inGroups.add(group)
-            groupRepository.save(otherGroup)
+            otherGroup.inGroups.add(currentGroup)
         }
 
         currentGroup.inGroups.clear()
@@ -76,7 +76,8 @@ class GroupService(private val groupRepository: GroupRepository,
                 group.inGroups.map { groupRepository.findOne(it.id) }
         )
 
-        return groupRepository.save(currentGroup)
+        return currentGroup
+
     }
 
     fun deleteGroup(groupId: Long) {

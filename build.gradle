@@ -1,16 +1,16 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.1.51'
-		springBootVersion = '1.5.7.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-	}
+    ext {
+        kotlinVersion = '1.1.51'
+        springBootVersion = '1.5.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
 }
 
 apply plugin: 'kotlin'
@@ -18,40 +18,48 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+
 group = 'dk.group11'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 archivesBaseName = "rolesystem"
 compileKotlin {
-	kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "1.8"
 }
 compileTestKotlin {
-	kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 repositories {
-	mavenCentral()
-	jcenter()
+    mavenCentral()
+    jcenter()
 }
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-jdbc')
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-web-services')
-	compile("org.springframework.retry:spring-retry")
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-web-services')
+    compile("org.springframework.retry:spring-retry")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.8.0'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compile("io.springfox:springfox-swagger-ui:2.7.0")
-	compile 'com.github.kittinunf.fuel:fuel:1.11.0'
-	compile 'com.github.kittinunf.fuel:fuel-gson:1.11.0'
-	runtime('org.postgresql:postgresql')
-	testCompile("com.h2database:h2:1.4.196")
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
+    compile 'com.github.kittinunf.fuel:fuel:1.11.0'
+    compile 'com.github.kittinunf.fuel:fuel-gson:1.11.0'
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.19.3"
+    runtime('org.postgresql:postgresql')
+    testCompile("com.h2database:h2:1.4.196")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
 }

@@ -8,26 +8,26 @@ class ApplicationGroup(
         var id: Long = 0,
         var title: String = "",
         var description: String = "",
-        @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+        @ManyToMany(cascade = arrayOf(CascadeType.MERGE))
         @JoinColumn
-        var members: MutableList<ApplicationUser> = mutableListOf(),
-        @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+        var members: MutableSet<ApplicationUser> = mutableSetOf(),
+        @ManyToMany(cascade = arrayOf(CascadeType.MERGE))
         @JoinColumn
-        var roles: MutableList<Role> = mutableListOf(),
+        var roles: MutableSet<Role> = mutableSetOf(),
 
-        @ManyToMany(mappedBy = "inGroups",cascade = arrayOf(CascadeType.ALL))
+        @ManyToMany(mappedBy = "inGroups", cascade = arrayOf(CascadeType.MERGE, CascadeType.PERSIST))
         /**
          * The groups this group is in
          */
-        var groupsIn: MutableList<ApplicationGroup> = mutableListOf(),
+        var groupsIn: MutableSet<ApplicationGroup> = mutableSetOf(),
 
 
-        @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+        @ManyToMany(cascade = arrayOf(CascadeType.MERGE, CascadeType.PERSIST))
         @JoinColumn
         /**
          * The groups that are part of this group
          */
-        var inGroups: MutableList<ApplicationGroup> = mutableListOf()
+        var inGroups: MutableSet<ApplicationGroup> = mutableSetOf()
 ) {
 
 
