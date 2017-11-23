@@ -22,10 +22,8 @@ class GroupController(val groupService: GroupService) {
     fun createGroups(@RequestBody group: ApplicationGroup) = groupService.createGroup(group).toDTO(true)
 
     @PutMapping("/{groupId}")
-    fun updateGroup(@RequestBody group: ApplicationGroup, @PathVariable groupId: String): GroupDTO {
-        val id = groupId.toLongOrNull() ?: throw BadRequestException("Group id was not a number")
-
-        if (group.id != id) {
+    fun updateGroup(@RequestBody group: ApplicationGroup, @PathVariable groupId: Long): GroupDTO {
+        if (group.id != groupId) {
             throw BadRequestException("ids did not match")
         }
 

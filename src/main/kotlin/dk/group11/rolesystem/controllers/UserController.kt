@@ -39,8 +39,14 @@ class UserController(
     @PostMapping
     fun createUser(@RequestBody user: ApplicationUser) = userService.createUser(user).toDTO(true)
 
-    @PutMapping
-    fun updateUser(@RequestBody user: ApplicationUser) = userService.updateUser(user).toDTO(true)
+    @PutMapping("/{id}")
+    fun updateUser(@RequestBody user: ApplicationUser, @PathVariable id: Long): UserDTO {
+        if (user.id != id) {
+            throw BadRequestException("Ids doesn't match")
+        }
+
+        return userService.updateUser(user).toDTO(true)
+    }
 
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: Long) = userService.deleteUser(id)

@@ -1,6 +1,8 @@
 package dk.group11.rolesystem.services
 
 import dk.group11.rolesystem.clients.*
+import dk.group11.rolesystem.controllers.UserDTO
+import dk.group11.rolesystem.controllers.toDTO
 import dk.group11.rolesystem.exceptions.BadRequestException
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
@@ -14,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
+data class updateUserAuditEntry(val before: UserDTO, val after: UserDTO)
 
 @Service
 class UserService(private val userRepository: UserRepository,
@@ -67,9 +71,24 @@ class UserService(private val userRepository: UserRepository,
         return userRepository.findAll().toList()
     }
 
+    @Transactional
     fun updateUser(user: ApplicationUser): ApplicationUser {
-        userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] User updated", user.toAuditEntry(), security.getToken())
+
+        val currentUser = userRepository.findOne(user.id)
+
+        auditClient.createEntry("[RoleSystem] Updating user", updateUserAuditEntry(currentUser.toDTO(true), user.toDTO(true)))
+
+        currentUser.name = user.name
+        currentUser.username = user.username
+
+        currentUser.roles.clear()
+        currentUser.roles.addAll(user.roles.map { roleRepository.findOne(it.id) })
+
+        currentUser.groups.forEach { it.members.remove(currentUser) }
+        user.groups.forEach {
+            val group = groupRepository.findOne(it.id)
+            group.members.add(currentUser)
+        }
 
         return user
     }
