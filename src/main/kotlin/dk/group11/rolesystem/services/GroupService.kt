@@ -10,7 +10,7 @@ import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.repositories.GroupRepository
 import dk.group11.rolesystem.repositories.RoleRepository
 import dk.group11.rolesystem.repositories.UserRepository
-import dk.group11.rolesystem.security.GroupMaintainerRole
+import dk.group11.rolesystem.security.GROUP_MAINTAINER_ROLE
 import dk.group11.rolesystem.security.ISecurityService
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -28,7 +28,7 @@ class GroupService(private val groupRepository: GroupRepository,
     fun getGroups(): List<ApplicationGroup> = groupRepository.findAll().toList()
 
     fun getGroup(id: Long): ApplicationGroup {
-        security.requireRoles(GroupMaintainerRole)
+        security.requireRoles(GROUP_MAINTAINER_ROLE)
 
         auditClient.createEntry("[RoleSystem] Update Group", id)
         val group = groupRepository.findOne(id) ?: throw NotFoundException("Group not find")
@@ -39,7 +39,7 @@ class GroupService(private val groupRepository: GroupRepository,
     fun getGroupsByMemberId(id: Long): List<ApplicationGroup> = groupRepository.findByMembersId(id)
 
     fun createGroup(group: ApplicationGroup): ApplicationGroup {
-        security.requireRoles(GroupMaintainerRole)
+        security.requireRoles(GROUP_MAINTAINER_ROLE)
 
         val createdGroup = groupRepository.save(group)
         auditClient.createEntry("[RoleSystem] Create Group", group.toDTO(false))
@@ -49,7 +49,7 @@ class GroupService(private val groupRepository: GroupRepository,
 
     @Transactional
     fun updateGroup(group: ApplicationGroup): ApplicationGroup {
-        security.requireRoles(GroupMaintainerRole)
+        security.requireRoles(GROUP_MAINTAINER_ROLE)
 
         val currentGroup = groupRepository.findOne(group.id) ?: throw NotFoundException("Group not found")
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class AuditClient(val auditConfigProperties: AuditConfigProperties, private val securityService: SecurityService) {
     fun createEntry(action: String, data: Any, authToken: String = securityService.getToken()) {
-        Fuel.post(auditConfigProperties.url + "/api/auditentry")
+        Fuel.post(path = "${auditConfigProperties.url}/api/auditentry")
                 .header(Pair(HEADER_STRING, authToken))
                 .header(Pair("Content-Type", "application/json"))
                 .body(getJson(action, data))
@@ -30,6 +30,7 @@ private fun getJson(action: String, data: Any): String {
 
 data class AuditRequest(val action: String, val data: Any)
 
+@Suppress("SpringFacetCode")
 @Configuration
 @ConfigurationProperties(prefix = "audit")
 data class AuditConfigProperties(var url: String = "")

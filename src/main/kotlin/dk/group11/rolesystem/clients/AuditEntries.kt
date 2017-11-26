@@ -11,9 +11,26 @@ data class UserWithRole(val user: UserAuditEntry, val role: RoleAuditEntry)
 data class UserWithRoles(val user: UserAuditEntry, val role: List<RoleAuditEntry>)
 data class UserWithGroup(val user: UserAuditEntry, val group: GroupAuditEntry)
 data class UserWithGroups(val user: UserAuditEntry, val group: List<GroupAuditEntry>)
-class LoginAuditEntryData(val username: String, val userId: Long)
+data class LoginAuditEntryData(val username: String, val userId: Long)
 
 
-fun ApplicationUser.toAuditEntry(): UserAuditEntry = UserAuditEntry(username = this.username, name = this.name, userId = this.id)
-fun Role.toAuditEntry(): RoleAuditEntry = RoleAuditEntry(key = this.id, description = this.description, title = this.title)
-fun ApplicationGroup.toAuditEntry(): GroupAuditEntry = GroupAuditEntry(id = this.id, description = this.description, title = this.title)
+fun ApplicationUser.toAuditEntry(): UserAuditEntry =
+        UserAuditEntry(
+                username = username,
+                name = name,
+                userId = id
+        )
+
+fun Role.toAuditEntry(): RoleAuditEntry =
+        RoleAuditEntry(
+                key = id,
+                description = description,
+                title = title
+        )
+
+fun ApplicationGroup.toAuditEntry(): GroupAuditEntry =
+        GroupAuditEntry(
+                id = id,
+                description = description,
+                title = title
+        )

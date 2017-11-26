@@ -2,8 +2,10 @@ package dk.group11.rolesystem
 
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.repositories.UserRepository
-import dk.group11.rolesystem.security.GroupMaintainerRole
-import dk.group11.rolesystem.security.RoleCreatorRole
+import dk.group11.rolesystem.security.COURSE_CREATOR_ROLE
+import dk.group11.rolesystem.security.COURSE_MANAGEMENT_ROLE
+import dk.group11.rolesystem.security.GROUP_MAINTAINER_ROLE
+import dk.group11.rolesystem.security.ROLE_CREATOR_ROLE
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -15,31 +17,42 @@ import java.nio.file.Paths
 import java.util.*
 import javax.transaction.Transactional
 
-private val SYS_ADMIN_REF: Long = -10
-private val SYSTEM_REF: Long = -11
+private const val SYS_ADMIN_REF: Long = -10
+private const val SYSTEM_REF: Long = -11
 
 // This code is run on startup, and ensures a consistent first install
 
 @Component
-class Startup(
-        private val roleService: RoleService,
-        private val userRepository: UserRepository,
-        private val bCryptPasswordEncoder: BCryptPasswordEncoder
-) : ApplicationRunner {
+class Startup(private val roleService: RoleService,
+              private val userRepository: UserRepository,
+              private val bCryptPasswordEncoder: BCryptPasswordEncoder) : ApplicationRunner {
+
     @Transactional
     override fun run(args: ApplicationArguments?) {
 
         // Create necessary roles
         val roleCreatorRole = roleService.addRole(
-                RoleCreatorRole,
-                "Role creator",
-                "Can create new roles"
+                key = ROLE_CREATOR_ROLE,
+                title = "Role creator",
+                description = "Can create new roles"
+        )
+        val courseCreator = roleService.addRole(
+                key = COURSE_CREATOR_ROLE,
+                title = "Course Creator",
+                description = "Can create courses"
         )
         val groupMaintainerRole = roleService.addRole(
-                GroupMaintainerRole,
-                "Group Maintainer",
-                "Can maintain groups by deleting, updating, and creating "
+                key = GROUP_MAINTAINER_ROLE,
+                title = "Group Maintainer",
+                description = "Can maintain groups by deleting, updating, and creating "
         )
+        val courseManagementRole = roleService.addRole(
+                key = COURSE_MANAGEMENT_ROLE,
+                title = "Course Manager",
+                description = "Can edit Courses"
+        )
+
+        val allRoles = listOf(courseCreator, roleCreatorRole, groupMaintainerRole, courseManagementRole)
 
         val systemPasswordPath = Paths.get("./system_password")
         val systemPassword = try {
@@ -66,11 +79,10 @@ class Startup(
                 password = bCryptPasswordEncoder.encode(systemPassword)
         ))
 
-        sysadmin.roles.add(roleCreatorRole)
-        sysadmin.roles.add(groupMaintainerRole)
+        sysadmin.roles.addAll(allRoles)
         userRepository.save(sysadmin)
 
-        systemUser.roles.add(roleCreatorRole)
+        systemUser.roles.addAll(allRoles)
         userRepository.save(systemUser)
     }
 }

@@ -1,7 +1,7 @@
 package dk.group11.rolesystem.controllers
 
 import dk.group11.rolesystem.models.Role
-import dk.group11.rolesystem.security.RoleCreatorRole
+import dk.group11.rolesystem.security.ROLE_CREATOR_ROLE
 import dk.group11.rolesystem.security.SecurityService
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.web.bind.annotation.*
@@ -25,7 +25,7 @@ class RoleController(val roleService: RoleService, private val securityService: 
 
     @PostMapping
     fun createRole(@RequestBody role: Role): RoleDTO {
-        securityService.requireRoles(RoleCreatorRole)
+        securityService.requireRoles(ROLE_CREATOR_ROLE)
         return roleService.addRole(key = role.id, description = role.description, title = role.title).toDTO(false)
     }
 }
