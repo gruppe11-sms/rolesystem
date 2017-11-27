@@ -26,7 +26,8 @@ class UserService(private val userRepository: UserRepository,
                   private val auditClient: AuditClient,
                   private val security: ISecurityService,
                   private val roleRepository: RoleRepository,
-                  private val groupRepository: GroupRepository) : UserDetailsService {
+                  private val groupRepository: GroupRepository,
+                  private val roleVerifierService: RoleVerifierService) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails? {
         val user: ApplicationUser? = userRepository.findByUsername(username)
@@ -48,6 +49,13 @@ class UserService(private val userRepository: UserRepository,
         } else {
             throw BadRequestException("Cant find user")
         }
+    }
+
+    fun getMe(): ApplicationUser {
+        val me = getUser(security.getId())
+        val roles = roleVerifierService.getRolesForUser(me)
+
+        return me.copy(roles = roles.toMutableSet())
     }
 
     fun createUser(user: ApplicationUser): ApplicationUser {

@@ -55,6 +55,9 @@ class GroupService(private val groupRepository: GroupRepository,
 
         auditClient.createEntry("[RoleSystem] Update group", updatedGroupAuditEntry(currentGroup.toDTO(true), group.toDTO(true)))
 
+        currentGroup.title = group.title
+        currentGroup.description = group.description
+
         currentGroup.roles.clear()
         currentGroup.roles.addAll(
                 group.roles.map { roleRepository.findOne(it.id) }

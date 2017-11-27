@@ -26,7 +26,7 @@ class UserController(private val userService: UserService,
     fun getUsers(): List<UserDTO> = userService.getAllUsers().map { it.toDTO() }
 
     @GetMapping("/me")
-    fun getMe(): UserDTO = userService.getUser(securityService.getId()).toDTO()
+    fun getMe(): UserDTO = userService.getMe().toDTO()
 
     @GetMapping("/names")
     fun getUserNames(@RequestParam(name = "userIds") userIds: String): Map<Long, String> {

@@ -3,7 +3,7 @@ package dk.group11.rolesystem.models
 import javax.persistence.*
 
 @Entity
-class ApplicationUser(
+data class ApplicationUser(
         @Id @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Long = 0,
         var name: String = "",
