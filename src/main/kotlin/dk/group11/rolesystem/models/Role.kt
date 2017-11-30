@@ -16,7 +16,7 @@ class Role(
         var users: MutableList<ApplicationUser> = mutableListOf(),
 
         @ManyToMany(cascade = arrayOf(CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH))
-        @JoinTable(name = "application_group_members",
+        @JoinTable(name = "application_group_roles",
                 joinColumns = arrayOf(JoinColumn(name = "role_id")),
                 inverseJoinColumns = arrayOf(JoinColumn(name = "group_id"))
         )
