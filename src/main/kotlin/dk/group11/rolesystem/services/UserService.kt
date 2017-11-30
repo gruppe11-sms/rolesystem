@@ -89,16 +89,11 @@ class UserService(private val userRepository: UserRepository,
         currentUser.name = user.name
         currentUser.username = user.username
 
-        currentUser.roles.clear()
-        currentUser.roles.addAll(user.roles.map { roleRepository.findOne(it.id) })
+        currentUser.roles = user.roles.map { roleRepository.findOne(it.id) }.toMutableSet()
 
-        currentUser.groups.forEach { it.members.remove(currentUser) }
-        user.groups.forEach {
-            val group = groupRepository.findOne(it.id)
-            group.members.add(currentUser)
-        }
+        currentUser.groups = user.groups.map { groupRepository.findOne(it.id) }.toMutableSet()
 
-        return user
+        return currentUser
     }
 
     fun deleteUser(id: Long) {
