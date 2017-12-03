@@ -5,6 +5,7 @@ import dk.group11.rolesystem.clients.AuditClient
 import dk.group11.rolesystem.clients.LoginAuditEntryData
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.LoginUser
+import dk.group11.rolesystem.services.ISecretService
 import dk.group11.rolesystem.services.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletResponse
 
 class AuthenticationFilter(private val authManager: AuthenticationManager,
                            private val userService: UserService,
-                           private val auditClient: AuditClient) : UsernamePasswordAuthenticationFilter() {
+                           private val auditClient: AuditClient,
+                           private val secretService: ISecretService) : UsernamePasswordAuthenticationFilter() {
 
     data class UserData(val id: Long = 0, val username: String = "")
 
@@ -38,7 +40,7 @@ class AuthenticationFilter(private val authManager: AuthenticationManager,
         val token = Jwts.builder()
                 .setSubject(ObjectMapper().writeValueAsString(userData))
                 .setExpiration(Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET.toByteArray())
+                .signWith(SignatureAlgorithm.HS512, secretService.get("signing_key"))
                 .compact()
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token)
         auditClient.createEntry("[RoleSystem] Login", LoginAuditEntryData(user.username, user.id), TOKEN_PREFIX + token)

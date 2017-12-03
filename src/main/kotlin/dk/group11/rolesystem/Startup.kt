@@ -6,6 +6,7 @@ import dk.group11.rolesystem.security.COURSE_CREATOR_ROLE
 import dk.group11.rolesystem.security.COURSE_MANAGEMENT_ROLE
 import dk.group11.rolesystem.security.GROUP_MAINTAINER_ROLE
 import dk.group11.rolesystem.security.ROLE_CREATOR_ROLE
+import dk.group11.rolesystem.services.ISecretService
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -35,7 +36,8 @@ private const val SYSTEM_REF: Long = -11
 @Component
 class Startup(private val roleService: RoleService,
               private val userRepository: UserRepository,
-              private val bCryptPasswordEncoder: BCryptPasswordEncoder) : ApplicationRunner {
+              private val bCryptPasswordEncoder: BCryptPasswordEncoder,
+              private val secretService: ISecretService) : ApplicationRunner {
 
     @Transactional
     override fun run(args: ApplicationArguments?) {
@@ -64,9 +66,9 @@ class Startup(private val roleService: RoleService,
 
         val allRoles = listOf(courseCreator, roleCreatorRole, groupMaintainerRole, courseManagementRole)
 
-        val systemPasswordPath = Paths.get("./system_password")
+        val systemPasswordPath = Paths.get("system_password")
         val systemPassword = try {
-            Files.readAllLines(systemPasswordPath).first()
+            String(secretService.get(systemPasswordPath.toString()))
         } catch (e: NoSuchFileException) {
             val password = UUID.randomUUID().toString()
             Files.write(systemPasswordPath, listOf(password))
