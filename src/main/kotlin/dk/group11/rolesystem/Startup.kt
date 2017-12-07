@@ -68,7 +68,7 @@ class Startup(private val roleService: RoleService,
 
         val systemPasswordPath = Paths.get("system_password")
         val systemPassword = try {
-            String(secretService.get(systemPasswordPath.toString()))
+            String(secretService.get(systemPasswordPath.toString())).trim()
         } catch (e: NoSuchFileException) {
             val password = UUID.randomUUID().toString()
             Files.write(systemPasswordPath, listOf(password))
