@@ -1,5 +1,6 @@
 package dk.group11.rolesystem.controllers
 
+import dk.group11.rolesystem.models.AccessKey
 import dk.group11.rolesystem.models.ApplicationGroup
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.models.Role
@@ -58,10 +59,20 @@ fun Role.toDTO(recursive: Boolean = true): RoleDTO {
     )
 }
 
-data class UserDTO(val id: Long,
-                   val name: String,
-                   val password: String,
-                   val username: String,
+fun AccessKey.toDTO(): AccessKeyDTO {
+
+    return AccessKeyDTO(
+            id = id,
+            userId = user.id,
+            token = token
+    )
+
+}
+
+data class UserDTO(val id: Long = 0,
+                   val name: String = "",
+                   val password: String = "",
+                   val username: String = "",
                    val roles: List<RoleDTO> = emptyList(),
                    val groups: List<GroupDTO> = emptyList())
 
@@ -79,3 +90,9 @@ data class RoleDTO(val id: String,
                    val description: String,
                    val users: List<UserDTO> = emptyList(),
                    val groups: List<GroupDTO> = emptyList())
+
+data class AccessKeyDTO(
+        val id: Long,
+        val userId: Long,
+        val token: String
+)

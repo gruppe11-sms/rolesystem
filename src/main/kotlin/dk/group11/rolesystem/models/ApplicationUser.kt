@@ -28,7 +28,10 @@ data class ApplicationUser(
          * Used for some system calculations, that requires a
          * persistent way of referencing a user
          */
-        var systemRef: Long = 0
+        var systemRef: Long = 0,
+
+        @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH))
+        var accessKeys: MutableSet<AccessKey> = mutableSetOf()
 ) {
 
     override fun equals(other: Any?): Boolean {

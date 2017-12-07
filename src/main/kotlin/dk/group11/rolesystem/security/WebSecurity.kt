@@ -4,6 +4,7 @@ import dk.group11.rolesystem.clients.AuditClient
 import dk.group11.rolesystem.services.ISecretService
 import dk.group11.rolesystem.services.UserService
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -24,6 +25,7 @@ class WebSecurity(private val userDetailsService: UserDetailsService,
 
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/tokens").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(AuthenticationFilter(authenticationManager(), userService, auditClient, secretService))

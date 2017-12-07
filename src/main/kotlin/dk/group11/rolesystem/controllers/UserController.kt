@@ -64,7 +64,6 @@ class UserController(private val userService: UserService,
     @GetMapping("/verify")
     fun verifyRoles(@RequestParam("roles") roleKeys: String): VerifyResponse {
         val keys = roleKeys.split(delimiters = ",")
-        println("/api/users/verify id:${securityService.getId()}")
         val success = roleVerifierService.hasRoles(securityService.getId(), *keys.toTypedArray())
         return VerifyResponse(success)
     }
