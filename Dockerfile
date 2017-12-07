@@ -14,6 +14,7 @@ COPY --from=0 /home/gradle/project/build/libs/rolesystem-0.0.1-SNAPSHOT.jar /usr
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://role-database:5432/postgres \
     SPRING_DATASOURCE_USERNAME=postgres \
     SPRING_DATASOURCE_PASSWORD=postgres \
-    SPRING_JPA_GENERATE-DDL=true
+    SPRING_JPA_GENERATE-DDL=true \
+    AUDIT_URL=http://localhost:8086
 EXPOSE 8084
 CMD ["java", "-jar", "/usr/bin/rolesystem-0.0.1-SNAPSHOT.jar"]
