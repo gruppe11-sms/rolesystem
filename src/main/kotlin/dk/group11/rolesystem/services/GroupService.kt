@@ -36,8 +36,6 @@ class GroupService(private val groupRepository: GroupRepository,
         return group
     }
 
-    fun getGroupsByMemberId(id: Long): List<ApplicationGroup> = groupRepository.findByMembersId(id)
-
     fun createGroup(group: ApplicationGroup): ApplicationGroup {
         security.requireRoles(GROUP_MAINTAINER_ROLE)
 
@@ -84,30 +82,12 @@ class GroupService(private val groupRepository: GroupRepository,
     }
 
     fun deleteGroup(groupId: Long) {
+        security.requireRoles(GROUP_MAINTAINER_ROLE)
+
         val group = groupRepository.findOne(groupId)
         val user = userRepository.findOne(security.getId())
         groupRepository.delete(groupId)
         auditClient.createEntry("[RoleSystem] Group deleted",
-                UserWithGroup(user = user.toAuditEntry(), group = group.toAuditEntry()), security.getToken()
-        )
-    }
-
-    fun addGroupUser(groupId: Long, userId: Long) {
-        val group = groupRepository.findOne(groupId)
-        val user = userRepository.findOne(security.getId())
-        group.members.add(user)
-        groupRepository.save(group)
-        auditClient.createEntry("[RoleSystem] User added to group",
-                UserWithGroup(user = user.toAuditEntry(), group = group.toAuditEntry()), security.getToken()
-        )
-    }
-
-    fun removeGroupUser(groupId: Long, userId: Long) {
-        val group = groupRepository.findOne(groupId)
-        val user = userRepository.findOne(security.getId())
-        group.members.remove(user)
-        groupRepository.save(group)
-        auditClient.createEntry("[RoleSystem] User removed from group",
                 UserWithGroup(user = user.toAuditEntry(), group = group.toAuditEntry()), security.getToken()
         )
     }

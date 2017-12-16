@@ -2,10 +2,9 @@ package dk.group11.rolesystem
 
 import dk.group11.rolesystem.models.ApplicationUser
 import dk.group11.rolesystem.repositories.UserRepository
-import dk.group11.rolesystem.security.COURSE_CREATOR_ROLE
-import dk.group11.rolesystem.security.COURSE_MANAGEMENT_ROLE
 import dk.group11.rolesystem.security.GROUP_MAINTAINER_ROLE
 import dk.group11.rolesystem.security.ROLE_CREATOR_ROLE
+import dk.group11.rolesystem.security.USER_MANAGER_ROLE
 import dk.group11.rolesystem.services.ISecretService
 import dk.group11.rolesystem.services.RoleService
 import org.springframework.beans.BeansException
@@ -48,23 +47,18 @@ class Startup(private val roleService: RoleService,
                 title = "Role creator",
                 description = "Can create new roles"
         )
-        val courseCreator = roleService.addRole(
-                key = COURSE_CREATOR_ROLE,
-                title = "Course Creator",
-                description = "Can create courses"
-        )
         val groupMaintainerRole = roleService.addRole(
                 key = GROUP_MAINTAINER_ROLE,
                 title = "Group Maintainer",
                 description = "Can maintain groups by deleting, updating, and creating "
         )
-        val courseManagementRole = roleService.addRole(
-                key = COURSE_MANAGEMENT_ROLE,
-                title = "Course Manager",
-                description = "Can edit Courses"
+        val userManagerRole = roleService.addRole(
+                key = USER_MANAGER_ROLE,
+                title = "User manager",
+                description = "Can maintain users by creating, updating and deleting"
         )
 
-        val allRoles = listOf(courseCreator, roleCreatorRole, groupMaintainerRole, courseManagementRole)
+        val allRoles = listOf(userManagerRole, roleCreatorRole, groupMaintainerRole)
 
         val systemPasswordPath = Paths.get("system_password")
         val systemPassword = try {

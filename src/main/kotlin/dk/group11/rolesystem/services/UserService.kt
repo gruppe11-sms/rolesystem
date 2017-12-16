@@ -1,6 +1,7 @@
 package dk.group11.rolesystem.services
 
-import dk.group11.rolesystem.clients.*
+import dk.group11.rolesystem.clients.AuditClient
+import dk.group11.rolesystem.clients.toAuditEntry
 import dk.group11.rolesystem.controllers.UserDTO
 import dk.group11.rolesystem.controllers.toDTO
 import dk.group11.rolesystem.exceptions.BadRequestException
@@ -10,6 +11,7 @@ import dk.group11.rolesystem.repositories.GroupRepository
 import dk.group11.rolesystem.repositories.RoleRepository
 import dk.group11.rolesystem.repositories.UserRepository
 import dk.group11.rolesystem.security.ISecurityService
+import dk.group11.rolesystem.security.USER_MANAGER_ROLE
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -59,6 +61,8 @@ class UserService(private val userRepository: UserRepository,
     }
 
     fun createUser(user: ApplicationUser): ApplicationUser {
+        security.requireRoles(USER_MANAGER_ROLE)
+
         if (userRepository.existsByUsername(user.username)) {
             throw BadRequestException("Username already in use")
         }
@@ -81,6 +85,7 @@ class UserService(private val userRepository: UserRepository,
 
     @Transactional
     fun updateUser(user: ApplicationUser): ApplicationUser {
+        security.requireRoles(USER_MANAGER_ROLE)
 
         val currentUser = userRepository.findOne(user.id)
 
@@ -97,6 +102,8 @@ class UserService(private val userRepository: UserRepository,
     }
 
     fun deleteUser(id: Long) {
+        security.requireRoles(USER_MANAGER_ROLE)
+
         val user = userRepository.findOne(id)
         userRepository.delete(user)
         auditClient.createEntry("[RoleSystem] User deleted", user.toAuditEntry(), security.getToken())
@@ -108,45 +115,5 @@ class UserService(private val userRepository: UserRepository,
             return user
         } else
             throw UsernameNotFoundException(username)
-    }
-
-    fun addUserRole(userId: Long, roleId: String) {
-        val user = userRepository.findOne(userId)
-        val role = roleRepository.findOne(roleId)
-        user.roles.add(role)
-        userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] User role added",
-                UserWithRole(user.toAuditEntry(), role.toAuditEntry()), security.getToken()
-        )
-    }
-
-    fun removeUserRole(userId: Long, roleId: String) {
-        val user = userRepository.findOne(userId)
-        val role = roleRepository.findOne(roleId)
-        user.roles.remove(role)
-        userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] Roles removed", UserWithRole(user.toAuditEntry(), role.toAuditEntry()), security.getToken()
-        )
-    }
-
-    fun updateUserRoles(userId: Long, roleIds: List<String>) {
-        val user = userRepository.findOne(userId)
-        val roles = roleRepository.findAll(roleIds)
-        user.roles = roles.toMutableSet()
-        userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] Roles updated",
-                UserWithRoles(user.toAuditEntry(), roles.map { it.toAuditEntry() }), security.getToken()
-        )
-    }
-
-    fun updateUserGroup(userId: Long, groupIds: List<Long>) {
-        val user = userRepository.findOne(userId)
-        val groups = groupRepository.findAll(groupIds)
-        user.groups = groups.toMutableSet()
-        userRepository.save(user)
-        auditClient.createEntry("[RoleSystem] Groups updated",
-                UserWithGroups(user = user.toAuditEntry(), group = groups.map { it.toAuditEntry() }),
-                security.getToken()
-        )
     }
 }
